@@ -51,11 +51,12 @@ db.event.listen(db.session, 'before_commit', SearchMixin.before_commit)
 db.event.listen(db.session, 'after_commit', SearchMixin.after_commit)
 
 followers = db.Table('followers',
-                     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-                     db.Column('followed_id', db.Integer, db.ForeignKey('user.id')))
+                     db.Column('follower_id', db.Integer, db.ForeignKey('users.id')),
+                     db.Column('followed_id', db.Integer, db.ForeignKey('users.id')))
 
 
 class User(UserMixin, db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -124,7 +125,7 @@ class Post(SearchMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     author = db.relationship("User", back_populates='posts')
     language = db.Column(db.String(5))
 
