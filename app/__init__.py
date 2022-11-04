@@ -84,5 +84,3 @@ def get_locale():
 
 from app import models
 
-with current_app.app_context:
-    db.create_all()
