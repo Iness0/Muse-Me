@@ -8,10 +8,6 @@ from time import time
 from flask import current_app
 import jwt
 
-followers = db.Table('followers',
-                     db.Column('follower_id', db.Integer, db.ForeignKey('users.id')),
-                     db.Column('followed_id', db.Integer, db.ForeignKey('users.id')))
-
 
 class SearchMixin(object):
     @classmethod
@@ -131,6 +127,11 @@ class Post(SearchMixin, db.Model):
 
     def __repr__(self):
         return f'<Post {self.body}>'
+
+
+followers = db.Table('followers',
+                     db.Column('follower_id', db.Integer, db.ForeignKey('users.id')),
+                     db.Column('followed_id', db.Integer, db.ForeignKey('users.id')))
 
 
 @login.user_loader
