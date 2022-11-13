@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-10-31 01:33+0200\n"
+"POT-Creation-Date: 2022-11-09 14:34+0200\n"
 "PO-Revision-Date: 2022-10-31 01:36+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: he\n"
@@ -18,127 +18,179 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.10.3\n"
 
-#: app/forms.py:8 app/forms.py:15 app/forms.py:33
+#: app/__init__.py:21
+msgid "Please login to see this page"
+msgstr "אנא התחבר כדי לראות את הדף הזה"
+
+#: app/auth/forms.py:9 app/auth/forms.py:16 app/main/forms.py:10
 msgid "Username"
 msgstr "מִשׁתַמֵשׁ"
 
-#: app/forms.py:9 app/forms.py:17 app/forms.py:64
+#: app/auth/forms.py:10 app/auth/forms.py:18 app/auth/forms.py:39
 msgid "Password"
 msgstr "סיסמה"
 
-#: app/forms.py:10
+#: app/auth/forms.py:11
 msgid "Remember Me"
 msgstr "זכור אותי"
 
-#: app/forms.py:11 app/routes.py:57
+#: app/auth/forms.py:12 app/auth/routes.py:28
 msgid "Sign In"
 msgstr "להתחבר"
 
-#: app/forms.py:16 app/forms.py:59
+#: app/auth/forms.py:17 app/auth/forms.py:34
 msgid "Email"
 msgstr "Email"
 
-#: app/forms.py:18 app/forms.py:65
+#: app/auth/forms.py:19 app/auth/forms.py:40
 msgid "Repeat Password"
 msgstr "חזור על הסיסמה"
 
-#: app/forms.py:19 app/routes.py:72
+#: app/auth/forms.py:20 app/auth/routes.py:43
 msgid "Register"
 msgstr "הירשם"
 
-#: app/forms.py:24
+#: app/auth/forms.py:25
 msgid "This username already exists"
 msgstr "שם המשתמש הזה כבר קיים"
 
-#: app/forms.py:29
+#: app/auth/forms.py:30
 msgid "This email already registered, please Log In"
 msgstr "האימייל הזה כבר רשום, אנא התחבר"
 
-#: app/forms.py:34
-msgid "About me"
-msgstr "עליי"
-
-#: app/forms.py:35 app/forms.py:49 app/forms.py:55
-msgid "Submit"
-msgstr "שלח"
-
-#: app/forms.py:45
-msgid "Please use different name"
-msgstr "אנא השתמש בשם אחר"
-
-#: app/forms.py:53
-msgid "Say something"
-msgstr "תגיד משהו"
-
-#: app/forms.py:60 app/forms.py:66
+#: app/auth/forms.py:35 app/auth/forms.py:41
 msgid "Request Password Reset"
 msgstr "בקש איפוס סיסמה"
 
-#: app/routes.py:29
-msgid "Your post is now live!"
-msgstr "הפוסט שלך פעיל עכשיו!"
-
-#: app/routes.py:50
+#: app/auth/routes.py:20
 msgid "Invalid username or password"
 msgstr "שם משתמש או סיסמה לא חוקיים"
 
-#: app/routes.py:70
+#: app/auth/routes.py:41
 msgid "Congratulations, you are now a registered user!"
 msgstr "נרשמת"
 
-#: app/routes.py:105
-msgid "Your changes have been saved."
-msgstr "השינויים שלך נשמרו."
-
-#: app/routes.py:110
-msgid "Edit Profile"
-msgstr "ערוך פרופיל"
-
-#: app/routes.py:124
-msgid "You cannot follow yourself!"
-msgstr "אתה לא יכול לעקוב אחרי עצמך!"
-
-#: app/routes.py:144
-msgid "You cannot unfollow yourself!"
-msgstr "אתה לא יכול לבטל את המעקב אחר עצמך!"
-
-#: app/routes.py:162
-msgid "Explore"
-msgstr "לַחקוֹר"
-
-#: app/routes.py:175
+#: app/auth/routes.py:61
 msgid "Check your email for further instructions"
 msgstr "בדוק את האימייל שלך להנחיות נוספות"
 
-#: app/routes.py:177 app/templates/reset_password_request.html:4
+#: app/auth/routes.py:63 app/templates/auth/reset_password_request.html:4
 msgid "Reset Password"
 msgstr "לאפס את הסיסמה"
 
-#: app/routes.py:191
+#: app/auth/routes.py:77
 msgid "Your password has been reset"
 msgstr "הסיסמה שלך אופסה"
 
-#: app/templates/404.html:4
-msgid "File Not Found"
-msgstr "הקובץ לא נמצא"
+#: app/main/forms.py:11
+msgid "About me"
+msgstr "עליי"
 
-#: app/templates/500.html:4
-msgid "An unexpected error has occurred"
-msgstr "שגיאה בלתי צפויה התרחשה"
+#: app/main/forms.py:12 app/main/forms.py:26 app/main/forms.py:32
+#: app/main/forms.py:48
+msgid "Submit"
+msgstr "שלח"
 
-#: app/templates/500.html:5
-msgid "The administrator has been notified. Sorry for the inconvenience!"
-msgstr "המנהל קיבל הודעה. מצטער על אי הנוחות!"
+#: app/main/forms.py:22
+msgid "Please use different name"
+msgstr "אנא השתמש בשם אחר"
 
-#: app/templates/_post.html:10
-msgid "said"
-msgstr "אמר"
+#: app/main/forms.py:30
+msgid "Say something"
+msgstr "תגיד משהו"
+
+#: app/main/forms.py:36 app/main/routes.py:144
+#, fuzzy
+msgid "Search"
+msgstr "מִשׁתַמֵשׁ"
+
+#: app/main/forms.py:47
+msgid "Message"
+msgstr ""
+
+#: app/main/routes.py:35
+msgid "Your post is now live!"
+msgstr "הפוסט שלך פעיל עכשיו!"
+
+#: app/main/routes.py:72
+msgid "Your changes have been saved."
+msgstr "השינויים שלך נשמרו."
+
+#: app/main/routes.py:77
+msgid "Edit Profile"
+msgstr "ערוך פרופיל"
+
+#: app/main/routes.py:91
+msgid "You cannot follow yourself!"
+msgstr "אתה לא יכול לעקוב אחרי עצמך!"
+
+#: app/main/routes.py:111
+msgid "You cannot unfollow yourself!"
+msgstr "אתה לא יכול לבטל את המעקב אחר עצמך!"
+
+#: app/main/routes.py:129
+msgid "Explore"
+msgstr "לַחקוֹר"
+
+#: app/main/routes.py:172
+msgid "Send Message"
+msgstr "לשלוח הודעה"
+
+#: app/main/routes.py:211
+msgid "An export is in progress"
+msgstr "ייצוא מתבצע"
+
+#: app/main/routes.py:213
+msgid "Exporting posts..."
+msgstr "מייצא פוסטים..."
+
+#: app/templates/_post.html:15
+#, python-format
+msgid "%(username)s said %(when)s"
+msgstr ""
+
+#: app/templates/base.html:39 app/templates/messages.html:4
+msgid "Messages"
+msgstr "הודעות"
+
+#: app/templates/index.html:25 app/templates/user.html:47
+msgid "Newer posts"
+msgstr "פוסטים חדשים יותר"
+
+#: app/templates/index.html:30 app/templates/user.html:50
+msgid "Older posts"
+msgstr "פרסומים ישנים"
+
+#: app/templates/messages.html:12
+msgid "Newer messages"
+msgstr "הודעות חדשות יותר"
+
+#: app/templates/messages.html:17
+msgid "Older messages"
+msgstr "הודעות ישנות יותר"
+
+#: app/templates/search.html:4
+msgid "Search Results"
+msgstr "תוצאות חיפוש"
+
+#: app/templates/search.html:12
+msgid "Previous results"
+msgstr "תוצאות קודמות"
+
+#: app/templates/search.html:17
+msgid "Next results"
+msgstr "התוצאות הבאות"
+
+#: app/templates/send_message.html:4
+#, python-format
+msgid "Send Message to %(recipient)s"
+msgstr "שלח הודעה ל"
 
 #: app/templates/user.html:7
 msgid "User"
 msgstr "מִשׁתַמֵשׁ"
 
-#: app/templates/user.html:9
+#: app/templates/user.html:9 app/templates/user_popup.html:9
 msgid "Last seen on"
 msgstr "נראה לאחרונה ב"
 
@@ -146,11 +198,44 @@ msgstr "נראה לאחרונה ב"
 msgid "Edit your profile"
 msgstr "ערוך את הפרופיל שלך"
 
-#: app/templates/user.html:35
-msgid "Newer posts"
-msgstr "פוסטים חדשים יותר"
+#: app/templates/user.html:15
+msgid "Export your posts"
+msgstr "ייצא את הפוסטים שלך"
 
-#: app/templates/user.html:38
-msgid "Older posts"
-msgstr "פרסומים ישנים"
+#: app/templates/user.html:35
+msgid "Send private message"
+msgstr "שלח הודעה פרטית"
+
+#: app/templates/user_popup.html:11
+#, python-format
+msgid "%(count)d followers"
+msgstr ""
+
+#: app/templates/user_popup.html:11
+#, python-format
+msgid "%(count)d following"
+msgstr ""
+
+#: app/templates/user_popup.html:17
+msgid "Follow"
+msgstr "לעקוב אחר"
+
+#: app/templates/user_popup.html:24
+msgid "Unfollow"
+msgstr "בטל את המעקב"
+
+#: app/templates/errors/404.html:4
+msgid "File Not Found"
+msgstr "הקובץ לא נמצא"
+
+#: app/templates/errors/500.html:4
+msgid "An unexpected error has occurred"
+msgstr "שגיאה בלתי צפויה התרחשה"
+
+#: app/templates/errors/500.html:5
+msgid "The administrator has been notified. Sorry for the inconvenience!"
+msgstr "המנהל קיבל הודעה. מצטער על אי הנוחות!"
+
+#~ msgid "said"
+#~ msgstr "אמר"
 

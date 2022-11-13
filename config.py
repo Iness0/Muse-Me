@@ -23,3 +23,4 @@ class Config(object):
     ELASTICSEARCH_LOGIN = os.environ.get('ELASTICSEARCH_LOGIN')
     ELASTICSEARCH_PASSWORD = os.environ.get('ELASTICSEARCH_PASSWORD')
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
+    REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'

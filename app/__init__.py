@@ -10,6 +10,9 @@ import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 from config import Config
 from elasticsearch import Elasticsearch
+from redis import Redis
+import rq
+
 
 migrate = Migrate()
 db = SQLAlchemy()
@@ -40,8 +43,13 @@ def create_app(config_class=Config):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
+    from app.api import bp as api_bp
+    app.register_blueprint(api_bp, url_prefix='/api')
+
     app.elasticsearch = Elasticsearch(app.config['ELASTICSEARCH'], basic_auth=
-    (app.config['ELASTICSEARCH_LOGIN'], app.config['ELASTICSEARCH_PASSWORD']))
+    (app.config['ELASTICSEARCH_LOGIN'], app.config['ELASTICSEARCH_PASSWORD']), verify_certs=False)
+    app.redis = Redis.from_url(app.config['REDIS_URL'])
+    app.task_queue = rq.Queue('microblog-tasks', connection=app.redis)
 
     if not app.debug and not app.testing:
         if app.config['MAIL_SERVER']:
