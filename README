@@ -1,0 +1,13 @@
+TO START website YOU NEED ".ENV" FILE IN MAIN DIRECTORY WITH JUST 3 PARAMETERS:
+ADMINS=<YOUR EMAIL>
+MAIL_USERNAME=<GOOGLE_EMAIL_TO_SEND_MESSAGES>
+MAIL_PASSWORD=<PASSWORD_TO_SEND_MESSAGES>
+
+Example:
+ADMINS=INESS0@Yahoo.com
+MAIL_USERNAME=Pythonmessanger@gmail.com
+MAIL_PASSWORD=itsnotrealpasswordtho
+
+
+With .env being created all you need is dto write in "docker compose up" in our console.
+(Obviously, you need docker installed on you system)
