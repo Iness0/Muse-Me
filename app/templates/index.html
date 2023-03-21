@@ -1,36 +1,152 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hi, {{ current_user.username }}!</h1>
-    {% if form %}
-    <form action="" method="post">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.post.label }}<br>
-        {{ form.post(cols=50, rows=6) }}<br>
-        {% for error in form.post.errors %}
-        <span style="color: red;">{{ error }}</span>
-        {% endfor %}
-    </p>
-    <p>{{ form.submit() }}</p>
-    </form>
-    {% endif %}
-    {% for post in posts %}
-        {% include '_post.html' %}
-    {% endfor %}
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <li class="page-item{% if not prev_url %} disabled{% endif %}">
-                <a class="page-link" href="{{ prev_url or '#'}}">
-                    <span aria-hidden="true">&larr;</span> {{ _('Newer posts') }}
-                </a>
-            </li>
-            <li class="page-item{% if not next_url %} disabled{% endif %}">
-                <a class="page-link" href="{{ next_url or '#'}}">
-                    {{ _('Older posts') }} <span aria-hidden="true">&rarr;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    <div class="container-fluid">
+        <div class="offcanvas-body d-block px-2 px-lg-0">
+            <!-- Card START -->
+            <div class="card overflow-hidden">
+                <!-- Cover image -->
+                <div class="h-50px"
+                     style="background-image: url('{{ url_for('static', filename='images/blog_main.png') }}'); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                <!-- Card body START -->
+                <div class="card-body pt-0">
+                    <div class="text-center">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-lg mt-n5 mb-3">
+                            <a href="{{ url_for('main.user', username=current_user.username) }}"><img
+                                    class="avatar-img rounded border border-white border-3"
+                                    src="{{ current_user.avatar(70) }}" alt=""></a>
+                        </div>
+                        <!-- Info -->
+                        <h5 class="mb-0"><a href="#!">{{ current_user.username }} </a></h5>
 
+                        <!-- User stat START -->
+                        <div class="hstack gap-2 gap-xl-3 justify-content-center">
+                            <!-- User stat item -->
+                            <div>
+                                <h6 class="mb-0">{{ count }}</h6>
+                                <small>Post</small>
+                            </div>
+                            <!-- Divider -->
+                            <div class="vr"></div>
+                            <!-- User stat item -->
+                            <div>
+                                <h6 class="mb-0">{{ followers }}</h6>
+                                <small>Followers</small>
+                            </div>
+                            <!-- Divider -->
+                            <div class="vr"></div>
+                            <!-- User stat item -->
+                            <div>
+                                <h6 class="mb-0">{{ followed }}</h6>
+                                <small>Following</small>
+                            </div>
+                        </div>
+                        <!-- User stat END -->
+                    </div>
+
+                    <!-- Divider -->
+                    <hr>
+
+                    <!-- Side Nav START -->
+                    <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="{{ url_for('main.user', username=current_user.username) }}my-profile.html"> <i
+                                    class="bi bi-person-circle" alt=""></i><span>  Feed </span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.explore') }}"><i class="bi bi-hash"
+                                                                                        alt=""></i><span>  Explore </span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.messages') }}"><i class="bi bi-envelope"
+                                                                                         alt=""></i><span>  Messages</span></a>
+                        </li>
+                        {% set new_messages = current_user.new_messages() %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.messages') }}"> <i class="bi bi-bell" alt=""></i><span>  Notifications: {% if new_messages %}
+                                {{ new_messages }}
+                            {% else %} 0 {% endif %}</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.logout') }}"> <i class="bi bi-box-arrow-left"
+                                                                                        alt=""></i><span>  Log Out </span></a>
+                        </li>
+                    </ul>
+                    <!-- Side Nav END -->
+                </div>
+                <!-- Card body END -->
+                <!-- Card footer -->
+                <div class="card-footer text-center py-2">
+                    <a class="btn btn-link btn-sm" href="{{ url_for('main.user', username=current_user.username) }}">View
+                        Profile </a>
+                </div>
+            </div>
+            <!-- Card END -->
+            <!-- Copyright -->
+            <p class="small text-center mt-1">©2023 <a class="text-body" target="_blank" href="linkedIN">
+                LinkedInYury </a></p>
+        </div>
+
+        <div class="card card-body">
+            <div class="d-flex mb-3">
+                <!-- Avatar -->
+                <div class="avatar avatar-xs me-2">
+                    <a href="#"> <img class="avatar-img rounded border border-white border-3"
+                                      src="{{ current_user.avatar(70) }}" alt=""></a>
+                </div>
+                <!-- Post input -->
+                <form class="w-100">
+                    <textarea class="form-control pe-4 border-0" rows="2" data-autoresize=""
+                              placeholder="Share your thoughts..."></textarea>
+                </form>
+            </div>
+            <!-- Share feed toolbar START -->
+            <ul class="nav nav-pills nav-stack small fw-normal">
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"
+                            id="upload-btn">
+                        <i class="bi bi-image-fill text-success pe-2"></i>Photo
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <!-- Share feed toolbar END -->
+
+        <h1>Latest from your feed</h1>
+        {% for post in posts %}
+            {% include '_post.html' %}
+        {% endfor %}
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item{% if not prev_url %} disabled{% endif %}">
+                    <a class="page-link" href="{{ prev_url or '#' }}">
+                        <span aria-hidden="true">&larr;</span> {{ _('Newer posts') }}
+                    </a>
+                </li>
+                <li class="page-item{% if not next_url %} disabled{% endif %}">
+                    <a class="page-link" href="{{ next_url or '#' }}">
+                        {{ _('Older posts') }} <span aria-hidden="true">&rarr;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    {% for hashtag, count in hashtag_counts %}
+        {% include 'hashtags.html' %}
+    {% endfor %}
+    {% include 'dropzone.html' %}
+    {% include 'who_to_follow.html' %}
+<script>
+$(document).ready(function () {
+    $(".card-img").click(function () {
+        var modalId = $(this).parent().data("target");
+        $(modalId).modal("show");
+    });
+});
+</script>
 {% endblock %}
+

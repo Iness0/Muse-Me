@@ -1,6 +1,6 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, func
 from app import db, login
-from app.search import add_to_index, remove_from_index, query_index
+from app.search import add_to_index, remove_from_index, query_index, query_hashtag
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -51,6 +51,13 @@ class SearchMixin(object):
         return cls.query.filter(cls.id.in_(ids)).order_by(db.case(when, value=cls.id)), total
 
     @classmethod
+    def get_all_tags(cls):
+        total = query_hashtag(cls.__tablename__)
+        if len(total) == 0:
+            return 'None found'
+        return total[:10]
+
+    @classmethod
     def before_commit(cls, session):
         session._changes = {
             'add': list(session.new),
@@ -93,10 +100,10 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
-    #api
+    # api
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
-    #relations
+    # relations
     posts = db.relationship('Post', back_populates='author', lazy='dynamic')
     messages_sent = db.relationship('Message', foreign_keys='Message.sender_id',
                                     back_populates='author', lazy='dynamic')
@@ -143,6 +150,23 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
             followers.c.follower_id == self.id)
         own = Post.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Post.timestamp.desc())
+
+    def count_followed(self):
+        followed = self.followed.count()
+        followers = self.followers.count()
+        return followed, followers
+
+    def get_popular(self):
+        pops = (
+            User.query.filter(User.id != self.id)
+            .filter(~User.followed.any(User.id == self.id))
+            .outerjoin(User.posts)
+            .group_by(User.id)
+            .order_by(func.count(Post.id).desc())
+            .limit(10)
+            .all()
+        )
+        return pops
 
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
@@ -243,6 +267,7 @@ class Post(SearchMixin, db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     author = db.relationship("User", back_populates='posts')
     language = db.Column(db.String(5))
+    image_path = db.Column(db.String(255))
 
     def __repr__(self):
         return f'<Post {self.body}>'
@@ -255,7 +280,7 @@ class Message(db.Model):
     recipient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    #relations
+    # relations
     author = db.relationship('User', foreign_keys=[sender_id], back_populates='messages_sent')
     recipient = db.relationship('User', foreign_keys=[recipient_id], back_populates='messages_received')
 

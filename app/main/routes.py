@@ -1,9 +1,13 @@
+import json
+import logging
+import os
 from datetime import datetime
 from flask import render_template, flash, redirect, url_for, request, g, \
     jsonify, current_app
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from langdetect import detect, LangDetectException
+from werkzeug.utils import secure_filename
 from app import db
 from app.main.forms import MessageForm, EditProfileForm, EmptyForm, PostForm, SearchForm
 from app.models import User, Post, Message, Notification
@@ -24,12 +28,17 @@ def before_request():
 @login_required
 def index():
     form = PostForm()
-    if form.validate_on_submit():
+    if request.method == 'POST':
+        text = request.form.get('textfield')
         try:
-            language = detect(form.post.data)
+            language = detect(text)
         except LangDetectException:
             language = ''
-        post = Post(body=form.post.data, author=current_user, language=language)
+        image_file = request.files['image']
+        filename = secure_filename(image_file.filename)
+        image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        image_file.save(image_path)
+        post = Post(body=text, author=current_user, language=language, image_path=f'uploads/{filename}')
         db.session.add(post)
         db.session.commit()
         flash(_('Your post is now live!'))
@@ -37,13 +46,23 @@ def index():
     page = request.args.get('page', 1, type=int)
     posts = current_user.followed_posts().paginate(
         page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+    followed, followers = current_user.count_followed()
     next_url = url_for('main.index', page=posts.next_num) \
         if posts.has_next else None
     prev_url = url_for('main.index', page=posts.prev_num) \
         if posts.has_prev else None
+    hashtag_counts = Post.get_all_tags()
+    count = current_user.posts.count()
+    popular_people = current_user.get_popular()
+    print(popular_people)
     return render_template('index.html', form=form, title='Home', posts=posts.items,
-                           next_url=next_url, prev_url=prev_url)
+                           next_url=next_url, prev_url=prev_url, hashtag_counts=hashtag_counts,
+                           followed=followed, followers=followers, count=count, popular_people=popular_people)
 
+
+# @bp.route('/upload')
+# @login_required
+# def upload():
 
 @bp.route('/user/<username>')
 @login_required
@@ -126,8 +145,9 @@ def explore():
         page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     next_url = url_for('main.explore', page=posts.next_num) if posts.has_next else None
     prev_url = url_for('main.explore', page=posts.prev_num) if posts.has_prev else None
+    hashtag_counts = Post.get_all_tags()
     return render_template('index.html', title=_('Explore'), posts=posts.items,
-                           next_url=next_url, prev_url=prev_url)
+                           next_url=next_url, prev_url=prev_url, hashtag_counts=hashtag_counts)
 
 
 @bp.route('/search')
@@ -164,7 +184,7 @@ def send_message(recipient):
             recipient=user,
             body=form.message.data
         )
-        user.add_notifications('unread_message_count', user.new_messages())
+        user.add_notification('unread_message_count', user.new_messages())
         db.session.add(msg)
         db.session.commit()
         flash('Your message has been sent.')
@@ -177,7 +197,7 @@ def send_message(recipient):
 @login_required
 def messages():
     current_user.last_message_read_time = datetime.utcnow()
-    current_user.add_notifications('unread_message_count', 0)
+    current_user.add_notification('unread_message_count', 0)
     db.session.commit()
     page = request.args.get('page', 1, type=int)
     messages = current_user.messages_received.order_by(

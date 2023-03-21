@@ -1,0 +1,91 @@
+.navbar {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+body {
+    background-image: url('../images/blog_main.png');
+    background-size: 1920px 1080px;
+    background-position: center top;
+    background-color: black;
+}
+
+h1 {
+    margin-bottom: 45px;
+}
+
+#log {
+    font-family: 'Bebas Neue', cursive;
+    font-weight: bold;
+    font-size: 117px;
+    margin-top: 50px
+}
+
+label {
+    margin-top: 10px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 100;
+    font-size: 38px;
+}
+.form-check-label {
+    font-size: 20px;
+    margin: 0 15px;
+}
+.LogOptions {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 100;
+}
+
+.form-switch .form-check-input:focus {
+    border-color: rgba(0, 0, 0, 0.25);
+    outline: 0;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(0,0,0,0.25)'/></svg>");
+}
+.form-switch .form-check-input:checked {
+    background-color: #faf34f;
+    border-color: #faf34f;
+    border: none;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(255,255,255,1.0)'/></svg>");
+}
+.login-container {
+    margin: 30px 90px;
+    color: white;
+}
+
+label {
+  color: white;
+  margin-bottom: 20px;
+}
+
+input {
+  border-radius: 20px;
+    border: solid 2px;
+  height: 45px;
+  color: white;
+  background-color: black;
+    text-align: center;
+
+}
+
+/* Add green border to active input fields */
+input:focus {
+    border-color: yellow;
+}
+
+/* Add green border to input fields with invalid input */
+input.is-invalid:focus {
+  border-color: #FF5722;
+  box-shadow: none;
+}
+
+a {
+    text-decoration: none;
+    color: #faf34f;
+}
+
+a:hover {
+    color: #8222d1;
+}
+
+
+/* CSS */

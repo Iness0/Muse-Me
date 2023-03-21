@@ -1,28 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Sign In</h1>
-    <form action="{{ url_for('auth.login') }}" method="post">
-        {{ form.hidden_tag() }}
-        <div class="mb-3">
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}
-            {% for error in form.username.errors %}
-                <div class="alert alert-info" role="alert">{{ error }}</div>
-            {% endfor %}
-        </div>
-        <div class="mb-3">
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}
-            {% for error in form.password.errors %}
-                <div class="alert alert-info" role="alert">{{ error }}</div>
-            {% endfor %}
-        </div>
-        <div class="mb-3 form-check">
-            {{ form.remember_me() }} {{ form.remember_me.label }}
+    {% block css %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    {% endblock %}
+    <div class="login-container container-fluid">
+        <h1 id="log">MUSEME</h1>
+        <form action="{{ url_for('auth.login') }}" method="post">
+            {{ form.hidden_tag() }}
+            <div class="mb-3 fcon">
+                {{ form.username.label }}<br>
+                {{ form.username(size=32) }}
+                {% for error in form.username.errors %}
+                    <div class="alert alert-info" role="alert">{{ error }}</div>
+                {% endfor %}
             </div>
-        <p>{{ form.submit() }}</p>
-    </form>
-    <p>New User? <a href="{{ url_for('auth.register') }}">Click to Register!</a></p>
-    <p>Forgot Your Password? <a href="{{ url_for('auth.reset_password_request') }}">Reset</a></p>
+            <div class="mb-3 fcon">
+                {{ form.password.label }}<br>
+                {{ form.password(size=32) }}
+                {% for error in form.password.errors %}
+                    <div class="alert alert-info" role="alert">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="mb-3 form-group">
+                <div class="form-check form-switch">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Remember me</label>
+                    {{ form.remember_me(class_="form-check-input", role="switch", id="flexSwitchCheckDefault") }}
+                </div>
+            <p>{{ form.submit(class_="button-29") }}</p>
+            </div>
+        </form>
+        <div class="LogOptions">
+        <p>New User? <a href="{{ url_for('auth.register') }}">Click to Register!</a></p>
+        <p>Forgot Your Password? <a href="{{ url_for('auth.reset_password_request') }}">Reset</a></p>
+            </div>
+    </div>
 {% endblock %}

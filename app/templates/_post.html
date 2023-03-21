@@ -1,22 +1,50 @@
-<table class="table table-hover">
-    <tr>
-        <td width="70px">
-            <a href="{{ url_for('main.user', username=post.author.username) }}">
-                <img src="{{ post.author.avatar(70) }}" alt='avatar'>
+
+<div class="card">
+    <div class="card-header border-0 pb-0">
+        <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center">
+                <div class="avatar avatar-story me-2"><img src="{{ post.author.avatar(70) }}" alt='avatar'></div>
+            </div>
+            <div>
+                <div class="nav nav-divider">
+                    <h6 class="nav-item card-title mb-0"><a
+                            href="{{ url_for('main.user', username=post.author.username) }}"> {{ post.author.username }} </a>
+                    </h6>
+                    <span class="small">{{ moment(post.timestamp).fromNow() }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <p><span id="post{{ post.id }}">{{ post.body }}</span></p>
+        <!-- Card img -->
+        {% if post.image_path %}
+            <a href="#" data-toggle="modal" data-target="#imageModal{{ post.id }}">
+
+        <img class="card-img" src="{{ url_for('static', filename=post.image_path) }}" alt="image-card">
             </a>
-        </td>
-        <td>
-        {% set user_link %}
-            <span class="user_popup">
-                <a href="{{ url_for('main.user', username=post.author.username) }}">
-                   {{ post.author.username }}</a>
-            </span>
-        {% endset %}
-        {{ _('%(username)s said %(when)s',
-                        username=user_link, when=moment(post.timestamp).fromNow()) }}
-        <br>
-        <span id="post{{ post.id }}">{{ post.body }}</span>
-        <br>
-        </td>
-    </tr>
-</table>
+              <div class="modal fade" id="imageModal{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{ url_for('static', filename=post.image_path) }}" class="img-fluid mx-auto d-block" alt="My Image">
+                </div>
+            </div>
+        </div>
+    </div>
+        {% endif %}
+        <!-- Feed react START -->
+        <ul class="nav nav-stack py-3 small">
+            <li class="nav-item">
+                <a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip"
+                   data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start"
+                   data-bs-title="Frances Guerrero<br> Lori Stevens<br> Billy Vasquez<br> Judy Nguyen<br> Larry Lawson<br> Amanda Reed<br> Louis Crawford">
+                    <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked (56)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
