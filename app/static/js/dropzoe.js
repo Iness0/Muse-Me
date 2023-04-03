@@ -1,7 +1,7 @@
 let myDropzone = new Dropzone("#my-dropzone", {
   url: uploadUrl,
   // paramName: "image",
-  maxFiles: 1,
+  maxFiles: 3,
   maxFilesize: 10,
   acceptedFiles: "image/*",
   addRemoveLinks: true,
@@ -15,7 +15,7 @@ let myDropzone = new Dropzone("#my-dropzone", {
 
     submitButton.addEventListener("click", function () {
       // add textfield input to FormData object
-      let textFieldValue = document.getElementById("post").value.trim();
+      let textFieldValue = document.getElementById("droptext").value.trim();
 
       // Check if the text field is empty
       if (textFieldValue === "") {
@@ -26,10 +26,12 @@ let myDropzone = new Dropzone("#my-dropzone", {
         return;
       }
       let formData = new FormData();
-      formData.append("textfield", document.getElementById("post").value);
+      formData.append("post", document.getElementById("droptext").value);
       if (myDropzone.files.length > 0) {
-        formData.append('image', myDropzone.files[0], myDropzone.files[0].name);
-      }
+    for (var i = 0; i < myDropzone.files.length; i++) {
+        formData.append('images[]', myDropzone.files[i], myDropzone.files[i].name);
+    }
+}
 
 
 

@@ -1,8 +1,8 @@
 version: "3.8"
 services:
-    microblog:
+    muse_me:
       build: .
-      container_name: microblogs
+      container_name: muse_me
       ports:
         - "8000:5000"
       networks:
@@ -23,7 +23,7 @@ services:
         - ELASTICSEARCH_PASSWORD=evUIZakvL56r1fLXudt4
         - ADMINS=$ADMINS
         - REDIS_URL=redis://redis:6379/0
-        - DATABASE_URL=mysql+pymysql://microblog:Mysql12404@mysql/microblog
+        - DATABASE_URL=mysql+pymysql://muse_me:Mysql12404@mysql/muse_me
       links:
         - mysql
         - redis
@@ -38,7 +38,7 @@ services:
         - elasticsearch
         - mysql
         - redis
-        - microblog
+        - muse_me
       environment:
         - SECRET_KEY=${SECRET_KEY}
         - MAIL_SERVER=smtp.googlemail.com
@@ -50,12 +50,12 @@ services:
         - ELASTICSEARCH_LOGIN=elastic
         - ELASTICSEARCH_PASSWORD=evUIZakvL56r1fLXudt4
         - ADMINS=$ADMINS
-        - DATABASE_URL=mysql+pymysql://microblog:Mysql12404@mysql/microblog
+        - DATABASE_URL=mysql+pymysql://muse_me:Mysql12404@mysql/muse_me
         - REDIS_URL=redis://redis:6379/0
       links:
         - mysql
         - redis
-      entrypoint: venv/bin/rq worker --url redis://redis:6379/0 microblog-tasks
+      entrypoint: venv/bin/rq worker --url redis://redis:6379/0 muse_me-tasks
 
     redis:
       image: redis
@@ -85,8 +85,8 @@ services:
         - elastic
       environment:
         - MYSQL_RANDOM_ROOT_PASSWORD=yes
-        - MYSQL_DATABASE=microblog
-        - MYSQL_USER=microblog
+        - MYSQL_DATABASE=muse_me
+        - MYSQL_USER=muse_me
         - MYSQL_PASSWORD=Mysql12404
 
 

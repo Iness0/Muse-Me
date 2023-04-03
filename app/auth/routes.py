@@ -1,12 +1,24 @@
-from flask import render_template, redirect, url_for, flash, request
+from datetime import datetime
+from flask import render_template, redirect, url_for, flash, request, g
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
-from flask_babel import _
+from flask_babel import _, get_locale
 from app import db
 from app.auth import bp
-from app.auth.forms import LoginForm, RegisterForm, ResetPasswordRequestForm, ResetPasswordForm
+from app.auth.forms import LoginForm, RegisterForm, ResetPasswordRequestForm, ResetPasswordForm, \
+    ResetPasswordFormAuthorized
+from app.main.forms import SearchForm
 from app.models import User
 from app.auth.email import send_password_reset_email
+
+
+@bp.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
+        g.search_form = SearchForm()
+    g.locale = str(get_locale())
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -60,7 +72,7 @@ def reset_password_request():
             send_password_reset_email(user)
         flash(_('Check your email for further instructions'))
         return redirect(url_for('auth.login'))
-    return render_template('auth/reset_password_request.html', title=_('Reset Password', form=form))
+    return render_template('auth/reset_password_request.html', title=_('Reset Password'), form=form)
 
 
 @bp.route('/reset_password/<token>', methods=['GET', 'POST'])
@@ -78,4 +90,22 @@ def reset_password(token):
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
 
+
+@bp.route('/reset_password', methods=['POST'])
+def password_reset():
+    form = ResetPasswordFormAuthorized()
+    if form.validate_on_submit():
+        if current_user.check_password(form.password.data):
+            flash(_('You cant change password to the same password'))
+            return redirect(url_for('main.edit_profile'))
+        elif current_user.check_password(form.current_password.data):
+            current_user.set_password(form.password.data)
+            db.session.commit()
+            flash(_('Your password has been changed successfully'))
+            return redirect(url_for('main.edit_profile'))
+        else:
+            flash(_('Your current password is incorrect'))
+            return redirect(url_for('main.edit_profile'))
+    flash(_('there has been an error with your password'))
+    return redirect(url_for('main.edit_profile'))
 

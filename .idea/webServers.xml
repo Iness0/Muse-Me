@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="ab9fb0fb-35a9-49cd-b5fc-af1a6e021cdc" name="flask-social">
+        <fileTransfer accessType="SFTP" host="165.22.90.192" port="22" sshConfigId="7ea598ea-fe6e-4dac-9922-401dd652da14" sshConfig="root@165.22.90.192:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

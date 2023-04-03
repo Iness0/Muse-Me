@@ -1,0 +1,35 @@
+2023-04-01 22:32:30,740 - ERROR: Exception on /user/settings.html [GET] [in /Users/iness0/PycharmProjects/Social-Network-Flask/venv/lib/python3.11/site-packages/flask/app.py:1741)
+Traceback (most recent call last):
+  File "/Users/iness0/PycharmProjects/Social-Network-Flask/venv/lib/python3.11/site-packages/flask/app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/iness0/PycharmProjects/Social-Network-Flask/venv/lib/python3.11/site-packages/flask/app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/iness0/PycharmProjects/Social-Network-Flask/venv/lib/python3.11/site-packages/flask/app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/iness0/PycharmProjects/Social-Network-Flask/venv/lib/python3.11/site-packages/flask/app.py", line 1796, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/iness0/PycharmProjects/Social-Network-Flask/venv/lib/python3.11/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/iness0/PycharmProjects/Social-Network-Flask/app/main/routes.py", line 134, in user
+    user = get_user_from_username(username)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/iness0/PycharmProjects/Social-Network-Flask/app/main/routes.py", line 30, in get_user_from_username
+    return redirect(url_for('main.index'))
+                    ^^^^^^^^^^^^^^^^
+  File "/Users/iness0/PycharmProjects/Social-Network-Flask/venv/lib/python3.11/site-packages/flask/helpers.py", line 256, in url_for
+    return current_app.url_for(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/iness0/PycharmProjects/Social-Network-Flask/venv/lib/python3.11/site-packages/flask/app.py", line 2031, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/iness0/PycharmProjects/Social-Network-Flask/venv/lib/python3.11/site-packages/flask/app.py", line 2020, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/iness0/PycharmProjects/Social-Network-Flask/venv/lib/python3.11/site-packages/werkzeug/routing/map.py", line 917, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'index'. Did you mean 'main.index' instead?

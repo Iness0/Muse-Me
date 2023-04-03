@@ -37,10 +37,9 @@ def export_posts(user_id):
             time.sleep(5)
             i += 1
             _set_task_progress(100 * i // total_posts)
-        send_email('[Microblog] Your posts',
+        send_email('[Muse_me] Your posts',
                    from_email=app.config['ADMINS'][0],
                    to=[user.email],
-                   body=render_template('email/export_posts.txt', user=user),
                    html_content=render_template('email/export_posts.html', user=user),
                    attachments=[('posts.json', json.dumps({'posts': data}, indent=4), 'application/json')])
     except:

@@ -195,7 +195,6 @@ body {
   font-weight: var(--bs-body-font-weight);
   line-height: var(--bs-body-line-height);
   color: var(--bs-body-color);
-  text-align: var(--bs-body-text-align);
   background-color: var(--bs-body-bg);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -2394,10 +2393,6 @@ progress {
 .form-control::-webkit-date-and-time-value {
   height: 1.5em;
 }
-.form-control::-webkit-datetime-edit {
-  display: block;
-  padding: 0;
-}
 .form-control::-webkit-input-placeholder {
   color: var(--bs-gray-500);
   opacity: 1;
@@ -2782,11 +2777,11 @@ textarea.form-control-lg {
   outline: 0;
 }
 .form-range:focus::-webkit-slider-thumb {
-  -webkit-box-shadow: 0 0 0 1px #eff2f6, none;
-          box-shadow: 0 0 0 1px #eff2f6, none;
+  -webkit-box-shadow: 0 0 0 1px #eff2f6;
+          box-shadow: 0 0 0 1px #eff2f6;
 }
 .form-range:focus::-moz-range-thumb {
-  box-shadow: 0 0 0 1px #eff2f6, none;
+  box-shadow: 0 0 0 1px #eff2f6;
 }
 .form-range::-moz-focus-outer {
   border: 0;
@@ -4831,9 +4826,6 @@ textarea.form-control-lg {
   --bs-card-cap-padding-y: 1.25rem;
   --bs-card-cap-padding-x: 1.25rem;
   --bs-card-cap-bg: #fff;
-  --bs-card-cap-color: ;
-  --bs-card-height: ;
-  --bs-card-color: ;
   --bs-card-bg: #fff;
   --bs-card-img-overlay-padding: 1.25rem;
   --bs-card-group-margin: 0.75rem;
@@ -5940,7 +5932,6 @@ textarea.form-control-lg {
   --bs-toast-spacing: 1.5rem;
   --bs-toast-max-width: 350px;
   --bs-toast-font-size: 0.875rem;
-  --bs-toast-color: ;
   --bs-toast-bg: rgba(var(--bs-body-bg-rgb), 0.85);
   --bs-toast-border-width: var(--bs-border-width);
   --bs-toast-border-color: var(--bs-border-color-translucent);
@@ -6012,7 +6003,6 @@ textarea.form-control-lg {
   --bs-modal-width: 500px;
   --bs-modal-padding: 1rem;
   --bs-modal-margin: 0.5rem;
-  --bs-modal-color: ;
   --bs-modal-bg: #fff;
   --bs-modal-border-color: var(--bs-border-color-translucent);
   --bs-modal-border-width: 0;
@@ -6026,7 +6016,6 @@ textarea.form-control-lg {
   --bs-modal-header-border-width: var(--bs-border-width);
   --bs-modal-title-line-height: 1.5;
   --bs-modal-footer-gap: 0.5rem;
-  --bs-modal-footer-bg: ;
   --bs-modal-footer-border-color: var(--bs-border-color);
   --bs-modal-footer-border-width: var(--bs-border-width);
   position: fixed;
@@ -6337,7 +6326,6 @@ textarea.form-control-lg {
   --bs-tooltip-max-width: 200px;
   --bs-tooltip-padding-x: 0.5rem;
   --bs-tooltip-padding-y: 0.25rem;
-  --bs-tooltip-margin: ;
   --bs-tooltip-font-size: 0.75rem;
   --bs-tooltip-color: var(--bs-body-bg);
   --bs-tooltip-bg: var(--bs-emphasis-color);
@@ -9633,10 +9621,6 @@ textarea.form-control-lg {
   background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important;
 }
 
-.bg-body-emphasis {
-  --bs-bg-opacity: 1;
-  background-color: rgba(var(--bs-emphasis-bg-rgb), var(--bs-bg-opacity)) !important;
-}
 
 .bg-opacity-10 {
   --bs-bg-opacity: 0.1;
@@ -16950,11 +16934,6 @@ a.badge:hover {
   margin: 40px auto;
   width: 300px;
   height: 600px;
-}
-
-.iphone-x.iphone-x-half {
-  height: 300px;
-  background-image: url(../images/mockup/app-placeholder3.jpg);
 }
 
 @media (max-width: 575.98px) {

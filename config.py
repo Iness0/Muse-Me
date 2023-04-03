@@ -16,6 +16,7 @@ class Config(object):
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
     ADMINS = os.environ.get('ADMINS')
     POSTS_PER_PAGE = 7
     LANGUAGES = ['en', 'ru', 'he']
@@ -26,3 +27,5 @@ class Config(object):
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     STATIC_FOLDER = 'static'
     UPLOAD_FOLDER = 'app/static/uploads/'
+    COMMENTS_AUTOLOAD = 3
+    ALLOWED_FILES = {'png', 'jpg', 'jpeg', 'gif'}

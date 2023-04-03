@@ -1,0 +1,31 @@
+.message-left {
+        border-radius: 20px;
+        padding: 10px;
+        float: left;
+        clear: both;
+        margin-bottom: 10px;
+        max-width: 70%;
+    }
+
+.message-right {
+    background-color: #e6e6e6;
+    border-radius: 20px;
+    padding: 10px;
+    float: right;
+    clear: both;
+    margin-bottom: 10px;
+    max-width: 70%;
+}
+
+.small {
+    padding-left: 10px;
+}
+.chat-window {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}

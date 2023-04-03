@@ -1,0 +1,41 @@
+    {% if post.recipient.id==current_user.id %}
+    <tr class='message' onclick="window.location.href='{{ url_for('main.messages', user=post.author.id) }}';"
+        onmouseover="this.style.backgroundColor='#f5f5f5';" onmouseout="this.style.backgroundColor='transparent';">
+        <td style="width: 70px">
+            <img class="avatar avatar-story" src="{{ url_for('static', filename='uploads/' + post.author.avatar) if post.author.avatar else post.author.avatar_alt(70) }}" alt="avatar">
+        </td>
+        <td>
+            <div class="nav nav-divider">
+                <h6 class="nav-item card-title mb-0"><a href="{{ url_for('main.user', username=post.author.username) }}">{{ post.author.username }}</a></h6>
+                 <span class="small">{{ moment(post.timestamp).fromNow() }}</span>
+            </div>
+            <p><span id="post{{ post.id }}">{{ post.author.username }}:   {{ post.body }}</span></p>
+    {% else %}
+                <tr class='message' onclick="window.location.href='{{ url_for('main.messages', user=post.recipient.id) }}';"
+        onmouseover="this.style.backgroundColor='#f5f5f5';" onmouseout="this.style.backgroundColor='transparent';">
+        <td style="width: 70px">
+            <img class="avatar avatar-story" src="{{ url_for('static', filename='uploads/' + post.recipient.avatar) if post.recipient.avatar else post.recipient.avatar_alt(70) }}" alt="avatar">
+        </td>
+        <td>
+            <div class="nav nav-divider">
+                <h6 class="nav-item card-title mb-0"><a href="{{ url_for('main.user', username=post.recipient.username) }}">{{ post.recipient.username }}</a></h6>
+                <span class="small">{{ moment(post.timestamp).fromNow() }}</span>
+            </div>
+            <p><span id="post{{ post.id }}">Me:  {{ post.body }}</span></p>
+{% endif %}
+            {% if post.image_path %}
+                <a href="#" data-toggle="modal" data-target="#imageModal{{ post.id }}">
+                    <img class="card-img" src="{{ url_for('static', filename=post.image_path) }}" alt="image-card">
+                </a>
+                <div class="modal fade" id="imageModal{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <img src="{{ url_for('static', filename=post.image_path) }}" class="img-fluid mx-auto d-block" alt="My Image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </td>
+    </tr>

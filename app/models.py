@@ -1,6 +1,6 @@
-from sqlalchemy import ForeignKey, func
+from sqlalchemy import ForeignKey, func, exists
 from app import db, login
-from app.search import add_to_index, remove_from_index, query_index, query_hashtag
+from app.search import add_to_index, remove_from_index, query_index, query_hashtag, query_by_hashtag
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -58,6 +58,13 @@ class SearchMixin(object):
         return total[:10]
 
     @classmethod
+    def search_by_tags(cls, tags, page, per_page):
+        result, total = query_by_hashtag(cls.__tablename__, tags, page, per_page)
+        if len(result) == 0:
+            return cls.query.filter_by(id=0), 0
+        return result, total
+
+    @classmethod
     def before_commit(cls, session):
         session._changes = {
             'add': list(session.new),
@@ -97,14 +104,21 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
+    first_name = db.Column(db.String(64))
+    last_name = db.Column(db.String(64))
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     # api
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
+    # images
+    avatar = db.Column(db.String(124))
+    background_image = db.Column(db.String(120))
     # relations
     posts = db.relationship('Post', back_populates='author', lazy='dynamic')
+    comments = db.relationship('Comment', back_populates='author', lazy='dynamic')
+
     messages_sent = db.relationship('Message', foreign_keys='Message.sender_id',
                                     back_populates='author', lazy='dynamic')
     messages_received = db.relationship('Message', foreign_keys='Message.recipient_id',
@@ -127,7 +141,7 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def avatar(self, size):
+    def avatar_alt(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
@@ -159,7 +173,7 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     def get_popular(self):
         pops = (
             User.query.filter(User.id != self.id)
-            .filter(~User.followed.any(User.id == self.id))
+            .filter(~User.followers.any(id=self.id))
             .outerjoin(User.posts)
             .group_by(User.id)
             .order_by(func.count(Post.id).desc())
@@ -192,6 +206,27 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
         n = Notification(name=name, payload_json=json.dumps(data), user=self)
         db.session.add(n)
         return n
+
+    @classmethod
+    def has_reacted(cls, target_id, reaction_type):
+        if reaction_type == 'post':
+            emoji_exists = db.session.query(exists().where(
+                Reaction.user_id == cls.id,
+                Reaction.post_id == target_id
+            )).scalar()
+        elif reaction_type == 'comment':
+            emoji_exists = db.session.query(exists().where(
+                Reaction.user_id == cls.id,
+                Reaction.comment_id == target_id
+            )).scalar()
+        elif reaction_type == 'image':
+            emoji_exists = db.session.query(exists().where(
+                Reaction.user_id == cls.id,
+                Reaction.image_id == target_id
+            )).scalar()
+        else:
+            raise ValueError('Invalid reaction type. Must be either "post" or "comment".')
+        return emoji_exists
 
     def launch_task(self, name, description, *args, **kwargs):
         rq_job = current_app.task_queue.enqueue('app.tasks.' + name, self.id,
@@ -267,10 +302,71 @@ class Post(SearchMixin, db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     author = db.relationship("User", back_populates='posts')
     language = db.Column(db.String(5))
-    image_path = db.Column(db.String(255))
+    images = db.relationship('Image', backref=db.backref('post'), lazy='joined')
+    reactions = db.relationship('Reaction', backref=db.backref('post'), lazy='joined')
+    comments = db.relationship('Comment', backref=db.backref('post'), lazy='dynamic',
+                               order_by='Comment.timestamp.asc()')
 
     def __repr__(self):
         return f'<Post {self.body}>'
+
+    @classmethod
+    def count_reactions(cls, post_id):
+        return Reaction.query.filter_by(post_id=post_id).count()
+
+
+class Image(db.Model):
+    __tablename__ = 'images'
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', backref=db.backref('images', lazy='dynamic'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=True)
+    reactions = db.relationship('Reaction', backref=db.backref('images'), lazy='dynamic')
+
+    @classmethod
+    def count_reactions(cls, image_id):
+        return Reaction.query.filter_by(image_id=image_id).count()
+
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(500))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    author = db.relationship("User", back_populates='comments')
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    reactions = db.relationship('Reaction', backref=db.backref('comments'), lazy='dynamic')
+
+    def __repr__(self):
+        return f'<Comment {self.body}>'
+
+    def first_reaction_emoji(self):
+        reaction = self.reactions.first()
+        return reaction.emoji if reaction else None
+
+    @classmethod
+    def count_reactions(cls, comment_id):
+        return Reaction.query.filter_by(comment_id=comment_id).count()
+
+
+class Reaction(db.Model):
+    __tablename__ = 'reactions'
+    id = db.Column(db.Integer, primary_key=True)
+    emoji = db.Column(db.String(20))
+    # message_id = db.Column(db.Integer, db.ForeignKey('messages.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), index=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=True, index=True)
+    comment_id = db.Column(db.Integer, db.ForeignKey('comments.id'), nullable=True)
+    image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
+
+    # relationship
+    user = db.relationship('User', backref=db.backref('reactions', lazy='dynamic'))
+    comment = db.relationship('Comment', backref=db.backref('comment_reactions', lazy='dynamic'))
+
+    def __repr__(self):
+        return self.emoji
 
 
 class Message(db.Model):

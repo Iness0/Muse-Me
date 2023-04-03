@@ -1,5 +1,5 @@
 FROM python:3.10 as python-base
-RUN useradd microblog
+RUN useradd muse_me
 
 # https://python-poetry.org/docs#ci-recommendations
 ENV POETRY_VERSION=1.2.0
@@ -25,7 +25,7 @@ COPY --from=poetry-base ${POETRY_VENV} ${POETRY_VENV}
 # Add Poetry to PATH
 ENV PATH="${PATH}:${POETRY_VENV}/bin"
 
-WORKDIR /home/microblog
+WORKDIR /home/muse_me
 
 # Copy Dependencies
 COPY poetry.lock pyproject.toml ./
@@ -40,15 +40,15 @@ RUN venv/bin/pip install pymysql cryptography
 # Copy Application
 COPY app app
 COPY migrations migrations
-COPY microblog.py config.py boot.sh ./
+COPY main.py config.py boot.sh ./
 
 #Additional setup
 RUN chmod +x boot.sh
-ENV FLASK_APP microblog.py
+ENV FLASK_APP muse_me.py
 
 #Create new user
-RUN chown -R microblog:microblog ./
-USER microblog
+RUN chown -R muse_me:muse_me ./
+USER muse_me
 
 # Run Application
 EXPOSE 5000

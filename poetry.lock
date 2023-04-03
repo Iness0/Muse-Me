@@ -424,6 +424,20 @@ Flask = ">=2.2"
 SQLAlchemy = ">=1.4.18"
 
 [[package]]
+name = "flask-uploads"
+version = "0.2.1"
+description = "Flexible and efficient upload handling for Flask"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "Flask-Uploads-0.2.1.tar.gz", hash = "sha256:53ecbd6033667d50ae02b63adebbaa33c7fc56c09e5293025810cf9d841ecb02"},
+]
+
+[package.dependencies]
+Flask = ">=0.8.0"
+
+[[package]]
 name = "flask-wtf"
 version = "1.0.1"
 description = "Form rendering, validation, and CSRF protection for Flask with WTForms."
@@ -1106,4 +1120,4 @@ email = ["email-validator"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "0c6a46f5353e3da13455ed48fec5c63e2ba4443ab3fb577d6046e9635215fb84"
+content-hash = "aa098c6d73829065260ce499b6370b9ce747bafe7180cc425c9ec72abbd06844"

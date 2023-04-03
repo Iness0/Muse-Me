@@ -26,6 +26,7 @@ flask-httpauth = "^4.7.0"
 sendgrid = "^6.9.7"
 pymysql = "^1.0.2"
 cryptography = "^39.0.2"
+flask-uploads = "^0.2.1"
 
 
 [build-system]

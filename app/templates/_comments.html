@@ -1,0 +1,47 @@
+        <!-- Comment item START -->
+        <li class="comment-item">
+            <div class="d-flex position-relative">
+                <!-- Avatar -->
+                <div class="avatar avatar-xs">
+                    <a href="{{ url_for('main.user', username=comment.author.username) }}">
+            <img class="avatar-img rounded-circle" src="{{ url_for('static', filename='uploads/' + comment.author.avatar) if comment.author.avatar else comment.author.avatar_alt(32) }}" alt="avatar">
+
+                    </a>
+                </div>
+                <div class="ms-2">
+                    <!-- Comment by -->
+                    <div class="bg-light rounded-start-top-0 p-3 rounded">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="mb-1"><a
+                                    href="{{ url_for('main.user', username=comment.author.username) }}"> {{ comment.author.username }} </a>
+                            </h6>
+                            <small class="ms-2">{{ moment(comment.timestamp).fromNow() }}</small>
+                        </div>
+                        <p class="small mb-0">{{ comment.body }}</p>
+                    </div>
+                    <!-- Comment react -->
+                    <ul class="nav nav-stack py-3 small">
+                        <li class="nav-item like-container" data-post="{{ comment.id }}" data-current-emoji="{{ comment.reactions[0]|string if comment.reactions[0]|string !='' and comment.reactions[0]|string !='empty' and comment.reactions[0]|string is not none else 'like' }}"
+                            data-type="comment">
+                            <a href="#" class="like-btn">
+                                {% set reaction_to_emoji = {'like': '👍', 'love': '❤️', 'laugh': '😂', 'wow': '😮', 'sad': '😢', 'angry': '😠'} %}
+                                <span class="current-react">{% if current_user.has_reacted(comment.id, 'comment') is false %}
+                                    <i class="bi bi-hand-thumbs-up"></i>
+                                    {% else %}{{ reaction_to_emoji[comment.reactions[0]|string] }} {% endif %}Reacted: ({{ comment.count_reactions(comment.id) }})</span></a>
+                            <div class="emoji-container">
+                                <a href="#" class="emoji" data-reaction="like">👍</a>
+                                <a href="#" class="emoji" data-reaction="love">❤️</a>
+                                <a href="#" class="emoji" data-reaction="laugh">😂</a>
+                                <a href="#" class="emoji" data-reaction="wow">😮</a>
+                                <a href="#" class="emoji" data-reaction="sad">😢</a>
+                                <a href="#" class="emoji" data-reaction="angry">😠</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link reply-link" href="#!" data-post-id="{{ post.id }}" data-username="{{ comment.author.username }}"> <i class="bi bi-chat pe-1"></i>Reply</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Load more replies -->
+        </li>

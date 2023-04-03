@@ -54,3 +54,19 @@ def query_hashtag(index):
     search = current_app.elasticsearch.search(index=index, body=query)
     buckets = search['aggregations']['hashtags']['buckets']
     return [(bucket['key'], bucket['doc_count']) for bucket in buckets]
+
+
+def query_by_hashtag(index, hashtag, page, per_page):
+    if not current_app.elasticsearch:
+        return [], 0
+    query = {
+        "query": {
+            "match": {
+                "hashtags": hashtag
+            }
+        }
+    }
+    search = current_app.elasticsearch.search(index=index, body=query, size=per_page,
+        from_=(page - 1) * per_page)
+    res = [hit['_source'] for hit in search['hits']['hits']]
+    return res, search['hits']['total']['value']

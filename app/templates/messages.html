@@ -1,22 +1,50 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{ _('Messages') }}</h1>
+     <div class="row g-4">
+        {% include '_user_card.html' %}
+            <div class="col-md-8 col-lg-6 gap-4 vstack">
+    <h1>{{ _('Your Conversations') }}</h1>
+<table class="table table-hover table-light" id="message-table">
     {% for post in messages %}
-        {% include "_post.html" %}
+        {% include "_messages.html" %}
     {% endfor %}
-     <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <li class="page-item{% if not prev_url %} disabled{% endif %}">
-                <a class="page-link" href="{{ prev_url or '#'}}">
-                    <span aria-hidden="true">&larr;</span> {{ _('Newer messages') }}
-                </a>
-            </li>
-            <li class="page-item{% if not next_url %} disabled{% endif %}">
-                <a class="page-link" href="{{ next_url or '#'}}">
-                    {{ _('Older messages') }} <span aria-hidden="true">&rarr;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+</table>
+<div class="text-center">
+</div>
+            </div>
+          <button id="load-more-btn" {% if next_url == none %} style="display: none;"   {% endif %} data-next-url="{{ next_url|safe }}" class="btn btn-primary">Load More</button>
+        </div>
+    <script>
+        $(document).ready(function () {
+            let nextUrl = $('#load-more-btn').data('next-url');
+            $('#load-more-btn').click(function () {
+                $.ajax({
+                    url: nextUrl,
+                    success: function (data) {
+                        let newRows = $(data).find('#message-table tr');
+                        // Convert the Flask-Moment timestamp to a human-readable format
+                        newRows.find('.flask-moment').each(function () {
+                            let timestamp = $(this).data('timestamp');
+                            let humanReadable = moment(timestamp).fromNow();
+                            $(this).text(humanReadable).removeClass('flask-moment').show();
+                        });
+                        $('#message-table').append(newRows);
+                        {#$('#message-table').append($(data).find('#message-table tr'));#}
+                        nextUrl = $(data).find('#load-more-btn').data('next-url');
+                        if (nextUrl === 'None') {
+                            $('#load-more-btn').hide();
+                        }
+                    }
+                });
+            });
+
+      // When the user scrolls to the bottom of the page, load the next batch of messages
+      $(window).scroll(function() {
+        if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+          $('#load-more-btn').click();
+        }
+      });
+    });
+  </script>
 {% endblock %}

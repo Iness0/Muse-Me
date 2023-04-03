@@ -1,50 +1,323 @@
-
-<div class="card">
+   <div class="posts" id="posts-container">
+    {% for post in posts %}
+        <div class="card">
     <div class="card-header border-0 pb-0">
-        <div class="d-flex align-items-center">
             <div class="d-flex align-items-center">
-                <div class="avatar avatar-story me-2"><img src="{{ post.author.avatar(70) }}" alt='avatar'></div>
-            </div>
-            <div>
+                <div class="avatar avatar-story me-2">
+                        <img class="avatar-img rounded-circle border-white border-3" src="{{ url_for('static', filename='uploads/' + post.author.avatar) if post.author.avatar else post.author.avatar_alt(50) }}" alt="avatar">
+                </div>
                 <div class="nav nav-divider">
                     <h6 class="nav-item card-title mb-0"><a
                             href="{{ url_for('main.user', username=post.author.username) }}"> {{ post.author.username }} </a>
                     </h6>
-                    <span class="small">{{ moment(post.timestamp).fromNow() }}</span>
+                    <span class="nav-item small">{{ moment(post.timestamp).fromNow() }}</span>
                 </div>
+                            </div>
+
             </div>
-        </div>
-    </div>
     <div class="card-body">
         <p><span id="post{{ post.id }}">{{ post.body }}</span></p>
         <!-- Card img -->
-        {% if post.image_path %}
-            <a href="#" data-toggle="modal" data-target="#imageModal{{ post.id }}">
-
-        <img class="card-img" src="{{ url_for('static', filename=post.image_path) }}" alt="image-card">
+    <div class="image-container">
+        {% for image in post.images %}
+            <div class="image-wrapper">
+            <a href="{{ url_for('static', filename='uploads/' + image.filename) }}" class="glightbox3" data-gallery="{{ post.id }}">
+        <img class="card-img" src="{{ url_for('static', filename='uploads/' + image.filename) }}" alt="image-card">
             </a>
-              <div class="modal fade" id="imageModal{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <img src="{{ url_for('static', filename=post.image_path) }}" class="img-fluid mx-auto d-block" alt="My Image">
-                </div>
             </div>
-        </div>
+        {% endfor %}
     </div>
-        {% endif %}
         <!-- Feed react START -->
         <ul class="nav nav-stack py-3 small">
-            <li class="nav-item">
-                <a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip"
-                   data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start"
-                   data-bs-title="Frances Guerrero<br> Lori Stevens<br> Billy Vasquez<br> Judy Nguyen<br> Larry Lawson<br> Amanda Reed<br> Louis Crawford">
-                    <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked (56)</a>
+            <li class="nav-item like-container" data-post="{{ post.id }}" data-current-emoji="{{ post.reactions[0]|string if post.reactions[0]|string !='' and post.reactions[0]|string !='empty' and post.reactions[0]|string is not none else 'like' }}"
+                data-type="post">
+                <a href="#" class="like-btn">
+                 {% set reaction_to_emoji = {'like': '👍', 'love': '❤️', 'laugh': '😂', 'wow': '😮', 'sad': '😢', 'angry': '😠'} %}
+                    <span class="current-react" >
+                    {% if current_user.has_reacted(post.id, 'post') is false%}
+                    <i class="bi bi-hand-thumbs-up"></i>
+                    {% else %}
+                        {{ reaction_to_emoji[post.reactions[0]|string] }} {% endif %} Reacted: ({{ post.count_reactions(post.id) }})</span></a>
+                <div class="emoji-container">
+                    <a href="#" class="emoji" data-reaction="like">👍</a>
+                    <a href="#" class="emoji" data-reaction="love">❤️</a>
+                    <a href="#" class="emoji" data-reaction="laugh">😂</a>
+                    <a href="#" class="emoji" data-reaction="wow">😮</a>
+                    <a href="#" class="emoji" data-reaction="sad">😢</a>
+                    <a href="#" class="emoji" data-reaction="angry">😠</a>
+                </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments</a>
+                <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments: {{ post.comments.count() }}</a>
             </li>
         </ul>
+<!-- comments -->
+
+        {% with comments=post.comments.limit(3).all() %}
+            <div class="comments">
+                <ul class="comment-wrap list-unstyled">
+
+        {% for comment in comments %}
+        {% include '_comments.html' %}
+        {% endfor %}
+                    </ul>
+
+            </div>
+        {% endwith %}
+
+            <div class="comments" data-post="{{ post.id }}">
+                <ul class="comment-wrap list-unstyled">
+                    {% if post.show_more_comments %}
+                        <a href="#!" role="button"
+                           class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5 load-more-comments"
+                           data-post-id="{{ post.id }}">
+                            <div class="spinner-dots me-2">
+                                <span class="spinner-dot"></span>
+                                <span class="spinner-dot"></span>
+                                <span class="spinner-dot"></span>
+                            </div>
+                            Load more replies
+                        </a>
+                    {% endif %}
+                </ul>
+            </div>
+                    {% if comment_form %}
+
+            <div class="d-flex mb-3">
+                <!-- Comment box -->
+                <div class="avatar avatar-xs me-2">
+                    <a href="#!">
+                        <img class="avatar-img rounded-circle " src="{{ url_for('static', filename='uploads/' + current_user.avatar) if current_user.avatar else current_user.avatar_alt(70) }}" alt="avatar">
+
+                    </a>
+                </div>
+                <form class="nav nav-item w-100 position-relative" method="POST"
+                      action="{{ url_for('main.add_comment', post_id=post.id) }}">
+                    {{ comment_form.csrf_token }}
+                    {{ comment_form.body(class='form-control pe-5 bg-light post-textarea', rows=1, placeholder="Add a comment...", data_post_id=post.id, data_autoresize='') }}
+                    <button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0"
+                            type="submit">
+                        <i class="bi bi-send-fill"> </i>
+                    </button>
+                </form>
+            </div>
+                    {% endif %}
     </div>
+        </div>
+    {% endfor %}
 </div>
 
+        <div class="d-flex justify-content-center">
+    {% if prev_url %}
+<a class="btn btn-sm btn-primary-soft me-4" href="{{ prev_url }}">Get back</a>
+    {% endif %}
+    {% if next_url %}
+<a class="btn btn-sm btn-primary-soft " href="{{ next_url }}">View more</a>
+    {% endif %}
+        </div>
+<script>
+    <!-- Likes -->
+    const reactUrl = '{{ url_for('main.react') }}'
+    const likeContainers = document.querySelectorAll('.like-container');
+
+    function getEmojiFromResponse(response) {
+        const reactionToEmoji = {
+            'like': '👍',
+            'love': '❤️',
+            'laugh': '😂',
+            'wow': '😮',
+            'sad': '😢',
+            'angry': '😠',
+            'empty': '<i class="bi bi-hand-thumbs-up"></i>'
+        };
+        let emote = response.emoji;
+        let count = response.likes_total
+
+        return `${reactionToEmoji[emote]}  Reacted: ${count}`
+    }
+
+    likeContainers.forEach(likeContainer => {
+        // Get the elements within the container
+        const likeBtn = likeContainer.querySelector('.like-btn');
+        const emojiContainer = likeContainer.querySelector('.emoji-container');
+        const emojis = emojiContainer.querySelectorAll('.emoji');
+        const id = likeContainer.getAttribute('data-post');
+        const current_emoji = likeContainer.querySelector('.current-react');
+        const reaction_type = likeContainer.getAttribute('data-type')
+        let reactionValue = likeContainer.getAttribute('data-current-emoji')
+        let timeout;
+
+        likeBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            console.log(`this:${reactionValue} entered`);
+            $.ajax({
+                url: reactUrl,
+                method: 'POST',
+                data: {
+                    reaction: reactionValue,
+                    id: id,
+                    type: reaction_type
+
+                },
+                success: function (response) {
+                    console.log(response);
+                    current_emoji.innerHTML = getEmojiFromResponse(response);
+                    likeContainer.setAttribute('data-current-emoji', response.emoji)
+                    if (response.emoji !== 'empty') {
+                        reactionValue = response.emoji;
+                    } else {
+                        reactionValue = 'like';
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+        emojiContainer.addEventListener('click', (event) => {
+            event.preventDefault();
+            const reaction = event.target.getAttribute('data-reaction');
+            console.log(`Reacted with ${reaction}!`);
+            $.ajax({
+                url: reactUrl,
+                method: 'POST',
+                data: {
+                    reaction: reaction,
+                    id: id,
+                    type: reaction_type
+                },
+                success: function (response) {
+                    console.log(response);
+                    current_emoji.innerHTML = getEmojiFromResponse(response);
+                    likeContainer.setAttribute('data-current-emoji', response.emoji)
+                    if (response.emoji !== 'empty') {
+                        reactionValue = response.emoji;
+                    } else {
+                        reactionValue = 'like';
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        emojiContainer.addEventListener('mouseenter', () => {
+            clearTimeout(timeout);
+        });
+
+        emojiContainer.addEventListener('mouseleave', () => {
+            timeout = setTimeout(() => {
+                emojiContainer.style.display = 'none';
+            }, 999);
+        });
+
+        likeBtn.addEventListener('mouseenter', () => {
+            timeout = setTimeout(() => {
+                emojiContainer.style.display = 'flex';
+            }, 2);
+        });
+
+        likeBtn.addEventListener('mouseleave', () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                emojiContainer.style.display = 'none';
+            }, 500);
+        });
+    });
+    <!-- Replies -->
+    document.addEventListener("DOMContentLoaded", function () {
+        const replyLinks = document.querySelectorAll(".reply-link");
+
+        replyLinks.forEach((replyLink) => {
+            replyLink.addEventListener("click", (event) => {
+                event.preventDefault(); // Prevent the default click action
+
+                const postId = replyLink.dataset.postId;
+                const username = replyLink.dataset.username;
+
+                const postTextarea = document.querySelector(`.post-textarea[data-post-id="${postId}"]`);
+
+                if (postTextarea) {
+                    postTextarea.value = `@${username} `;
+
+                    postTextarea.focus();
+                }
+            });
+        });
+    });
+    <!-- Comment Loader -->
+    document.querySelectorAll('.load-more-comments').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const postId = btn.dataset.postId;
+            const response = await fetch(`/load_comments/${postId}`);
+            const comments = await response.json();
+            // Find the comments container for the specific post
+            const commentsContainer = btn.closest('.card-body').querySelector('.comments');
+            // set emojis, while rendering new comments
+            function renderComment(comment) {
+                const reactionToEmoji = {
+                    'like': '👍',
+                    'love': '❤️',
+                    'laugh': '😂',
+                    'wow': '😮',
+                    'sad': '😢',
+                    'angry': '😠'
+                };
+
+                const currentReact = (comment.hasReacted ? reactionToEmoji[comment.reactions] : '<i class="bi bi-hand-thumbs-up"></i>');
+
+                const timeAgo = moment(comment.timestamp).fromNow();
+                return `
+    <div class="d-flex position-relative">
+      <div class="avatar avatar-xs">
+        <a href="#!"><img class="avatar-img rounded-circle" src="${comment.avatar}" alt="avatar"></a>
+        {#<img class="avatar-img rounded-circle" src="{{ url_for('static', filename='uploads/' + comment.avatar) if comment.avatar else comment.avatar_alt(70) }}" alt="avatar">#}
+
+      </div>
+      <div class="ms-2">
+        <div class="bg-light rounded-start-top-0 p-3 rounded">
+          <div class="d-flex justify-content-between">
+            <h6 class="mb-1"><a href="/user/${comment.author}">${comment.author}</a></h6>
+            <small class="ms-2">${timeAgo}</small>
+          </div>
+          <p class="small mb-0">${comment.body}</p>
+        </div>
+        <ul class="nav nav-stack py-3 small">
+          <li class="nav-item like-container" data-post="${comment.id}" data-current-emoji="${comment.reactions || 'like'}" data-type="comment">
+            <a href="#" class="like-btn">
+              <span class="current-react">${currentReact} Reacted: (${comment.count_reactions})</span>
+            </a>
+            <div class="emoji-container">
+              <a href="#" class="emoji" data-reaction="like">👍</a>
+              <a href="#" class="emoji" data-reaction="love">❤️</a>
+              <a href="#" class="emoji" data-reaction="laugh">😂</a>
+              <a href="#" class="emoji" data-reaction="wow">😮</a>
+              <a href="#" class="emoji" data-reaction="sad">😢</a>
+              <a href="#" class="emoji" data-reaction="angry">😠</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link reply-link" href="#!" data-post-id="${postId}" data-username="${comment.author}"> <i class="bi bi-chat-fill pe-1"></i>Reply</a>
+          </li>
+        </ul>
+      </div>
+    </div>`;
+            }
+            // Insert the comments into the appropriate div
+            comments.forEach(comment => {
+                // Create and insert the comment element into the container
+                const commentElement = document.createElement('li');
+                commentElement.classList.add('comment-item');
+                commentElement.innerHTML = renderComment(comment);
+                commentsContainer.querySelector('.comment-wrap').appendChild(commentElement);
+            });
+
+            // Hide the "Load more replies" button
+            btn.classList.remove('d-flex');
+            btn.style.display = 'none';
+        });
+    });
+</script>

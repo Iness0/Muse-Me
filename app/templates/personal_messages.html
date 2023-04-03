@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/messages.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row g-4">
+        {% include '_user_card.html' %}
+            <div class="col-md-8 col-lg-6 gap-4 vstack">
+  <div class="card">
+  <div class="card-header text-center pb-0">
+      {{ user.username }}
+      <p>
+      <span class="small">Last seen: {{ moment(user.last_seen).fromNow() }}</span>
+      </p>
+  </div>
+      <div class="card-body">
+        <div class="chat-window">
+          <table class="table  table-borderless" id="message-table">
+
+              {% for post in messages %}
+                  {% if post.recipient.id==current_user.id %}
+                      <tr class='message message-right'
+                          onmouseover="this.style.backgroundColor='#e6d2d2';"
+                          onmouseout="this.style.backgroundColor='#e6e6e6';">
+                          <td style="width: 70px">
+                              <img class="avatar avatar-story" src="{{ url_for('static', filename='uploads/' + post.author.avatar) if post.author.avatar else post.author.avatar_alt(70) }}" alt="avatar">
+                          </td>
+                          <td>
+                              <div class="nav nav-divider">
+                                  <h6 class="nav-item card-title mb-0"><a
+                                          href="{{ url_for('main.user', username=post.author.username) }}">{{ post.author.username }}</a>
+                                  </h6>
+                                  <span class="small">{{ moment(post.timestamp).fromNow() }}</span>
+                              </div>
+                              <p><span id="post{{ post.id }}">{{ post.body }}</span></p>
+                          </td>
+                          {% else %}
+                      <tr class='message message-left'
+                          onmouseover="this.style.backgroundColor='#e6d2d2';"
+                          onmouseout="this.style.backgroundColor='transparent';">
+                      <td style="width: 70px">
+                          <img class="avatar avatar-story" src="{{ url_for('static', filename='uploads/' + post.author.avatar) if post.author.avatar else post.author.avatar_alt(70) }}" alt="avatar">
+                      </td>
+                      <td>
+                          <div class="nav nav-divider">
+                              <h6 class="nav-item card-title mb-0"><a
+                                      href="{{ url_for('main.user', username=post.author.username) }}">{{ post.author.username }}</a>
+                              </h6>
+                              <span class="small">{{ moment(post.timestamp).fromNow() }}</span>
+                          </div>
+                          <p><span id="post{{ post.id }}">{{ post.body }}</span></p>
+                      </td>
+                  {% endif %}
+              {% if post.image_path %}
+                  <td>
+                      <a href="#" data-toggle="modal" data-target="#imageModal{{ post.id }}">
+                          <img class="card-img" src="{{ url_for('static', filename=post.image_path) }}" alt="image-card">
+                      </a>
+                      <div class="modal fade" id="imageModal{{ post.id }}" tabindex="-1" role="dialog"
+                           aria-labelledby="imageModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-lg" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-body">
+                                      <img src="{{ url_for('static', filename=post.image_path) }}"
+                                           class="img-fluid mx-auto d-block" alt="My Image">
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </td>
+              {% endif %}
+              </tr>
+              {% endfor %}
+          </table>
+        </div>
+      </div>
+      <div class="text-center">
+{#        <button id="load-more-btn" {% if next_url == none %} style="display: none;"   {% endif %}#}
+{#                data-next-url="{{ next_url|safe }}" class="btn btn-primary">Load More#}
+{#        </button>#}
+    </div>
+  <div class="card-footer">
+          <form class="nav nav-item w-100 position-relative message-form" action="" method="post">
+                  {{ form.hidden_tag() }}
+          {{ form.message(class='form-control pe-5 bg-light post-textarea', rows=1, placeholder="Add a comment...", data_autoresize='') }}
+                    <button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0"
+                            type="submit">
+                        <i class="bi bi-send-fill"> </i>
+                    </button>
+      {% for error in form.message.errors %}
+          <span style="color: red;">{{ error }}</span>
+      {% endfor %}
+{#      <p>{{ form.submit() }}</p>#}
+      </form>
+      </div>
+  </div>
+            </div>
+        </div>
+    </div>
+
+
+{#    <script>#}
+{#        $(document).ready(function () {#}
+{#            let nextUrl = $('#load-more-btn').data('next-url');#}
+{#            $('#load-more-btn').click(function () {#}
+{#                $.ajax({#}
+{#                    url: nextUrl,#}
+{#                    success: function (data) {#}
+{#                        let newRows = $(data).find('#message-table tr');#}
+{#                        // Convert the Flask-Moment timestamp to a human-readable format#}
+{#                        newRows.find('.flask-moment').each(function () {#}
+{#                            let timestamp = $(this).data('timestamp');#}
+{#                            let humanReadable = moment(timestamp).fromNow();#}
+{#                            $(this).text(humanReadable).removeClass('flask-moment').show();#}
+{#                        });#}
+{#                        $('#message-table').prepend(newRows);#}
+                        {#$('#message-table').append($(data).find('#message-table tr'));#}
+{#                        nextUrl = $(data).find('#load-more-btn').data('next-url');#}
+{#                        if (nextUrl === 'None') {#}
+{#                            $('#load-more-btn').hide();#}
+{#                        }#}
+{#                    }#}
+{#                });#}
+{#            });#}
+{##}
+{#            // When the user scrolls to the bottom of the page, load the next batch of messages#}
+{#            $(window).scroll(function () {#}
+{#                if ($(window).scrollTop() + $(window).height() == $(document).height()) {#}
+{#                    $('#load-more-btn').click();#}
+{#                }#}
+{#            });#}
+{#        });#}
+{#    </script>#}
+
+<script>
+$(document).ready(function() {
+    scrollToBottom();
+
+    function scrollToBottom() {
+        let chatWindow = $('.chat-window');
+        chatWindow.scrollTop(chatWindow[0].scrollHeight);
+    }
+});
+  const form = document.querySelector('.message-form');
+  const input = document.querySelector('.post-textarea');
+
+  input.addEventListener('keyup', function(event) {
+    if (event.keyCode === 13) {  // 13 is the keycode for the Enter key
+      form.submit();
+    }
+  });
+</script>
+{% endblock %}

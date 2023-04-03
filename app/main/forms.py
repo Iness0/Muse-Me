@@ -9,7 +9,15 @@ from flask import request
 
 class EditProfileForm(FlaskForm):
     username = StringField(_1('Username'), validators=[DataRequired()])
-    about_me = TextAreaField(_1('About me'), validators=[Length(min=0, max=140)])
+    first_name = StringField(_('First name'))
+    last_name = StringField(_('Last name'))
+    about_me = TextAreaField(_1('About me'), validators=[Length(min=0, max=300)])
+    avatar = FileField('Image', validators=[
+        FileAllowed(['jpg', 'png'], 'Images only!')
+    ])
+    background_image = FileField('Image', validators=[
+        FileAllowed(['jpg', 'png'], 'Images only!')
+    ])
     submit = SubmitField(_1('Submit'))
 
     def __init__(self, original_name, *args, **kwargs):
@@ -20,7 +28,7 @@ class EditProfileForm(FlaskForm):
         if username.data != self.original_name:
             user = User.query.filter_by(username=self.username).first()
             if user is not None:
-                raise  ValidationError(_('Please use different name'))
+                raise ValidationError(_('Please use different name'))
 
 
 class EmptyForm(FlaskForm):
@@ -34,6 +42,11 @@ class PostForm(FlaskForm):
         FileAllowed(['jpg', 'png'], 'Images only!')
     ])
     submit = SubmitField(_1('Submit'))
+
+
+class CommentForm(FlaskForm):
+    body = TextAreaField("Comment", validators=[DataRequired()])
+    submit = SubmitField("Submit")
 
 
 class SearchForm(FlaskForm):
