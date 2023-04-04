@@ -2108,7 +2108,7 @@ progress {
   --bs-table-hover-color: var(--bs-body-color);
   --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
   color: var(--bs-table-color);
   vertical-align: top;
   border-color: var(--bs-table-border-color);
@@ -14208,10 +14208,11 @@ textarea.form-control-lg {
   background-color: rgba(79, 158, 248, 0.1);
 }
 .btn-info-soft:active, .btn-info-soft:hover, .btn-info-soft:focus {
-  color: #fff !important;
+  color: white !important;
   background-color: #4f9ef8 !important;
   border-color: #4f9ef8 !important;
 }
+
 
 .btn-warning-soft {
   color: #f7c32e;
@@ -14222,6 +14223,7 @@ textarea.form-control-lg {
   background-color: #f7c32e !important;
   border-color: #f7c32e !important;
 }
+
 
 .btn-danger-soft {
   color: #d6293e;
@@ -14861,7 +14863,7 @@ header {
   padding-bottom: 10px;
 }
 .navbar-brand .navbar-brand-item {
-  height: 36px;
+  height: 42px;
   display: block;
   width: auto;
 }

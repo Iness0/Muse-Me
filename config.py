@@ -17,6 +17,7 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+    SENDGRID_EMAIL = os.environ.get('SENDGRID_EMAIL')
     ADMINS = os.environ.get('ADMINS')
     POSTS_PER_PAGE = 7
     LANGUAGES = ['en', 'ru', 'he']

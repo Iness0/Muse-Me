@@ -6,10 +6,9 @@ from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from langdetect import detect, LangDetectException
 from sqlalchemy.orm import subqueryload
-from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 from app import db
-from app.auth.forms import ResetPasswordForm, ResetPasswordFormAuthorized
+from app.auth.forms import ResetPasswordFormAuthorized
 from app.main.forms import MessageForm, EditProfileForm, EmptyForm, PostForm, SearchForm, CommentForm
 from app.main.helpers import get_user_from_username, main_variables, allowed_file, save_image
 from app.models import User, Post, Message, Notification, Reaction, Comment, followers, Image

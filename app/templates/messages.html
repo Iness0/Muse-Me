@@ -1,20 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-     <div class="row g-4">
-        {% include '_user_card.html' %}
-            <div class="col-md-8 col-lg-6 gap-4 vstack">
-    <h1>{{ _('Your Conversations') }}</h1>
-<table class="table table-hover table-light" id="message-table">
-    {% for post in messages %}
-        {% include "_messages.html" %}
-    {% endfor %}
-</table>
-<div class="text-center">
-</div>
+    <div class="container-fluid">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                {% include '_user_card.html' %}
             </div>
-          <button id="load-more-btn" {% if next_url == none %} style="display: none;"   {% endif %} data-next-url="{{ next_url|safe }}" class="btn btn-primary">Load More</button>
+            <div class="col-md-8 col-lg-6 gap-4 vstack">
+                <div class="card">
+                    <table class="table table-borderless" id="message-table">
+                        {% for post in messages %}
+                            {% include "_messages.html" %}
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="text-center">
+                </div>
+            </div>
+            <button id="load-more-btn" {% if next_url == none %} style="display: none;"   {% endif %}
+                    data-next-url="{{ next_url|safe }}" class="btn btn-primary">Load More
+            </button>
         </div>
+    </div>
     <script>
         $(document).ready(function () {
             let nextUrl = $('#load-more-btn').data('next-url');
@@ -39,12 +46,12 @@
                 });
             });
 
-      // When the user scrolls to the bottom of the page, load the next batch of messages
-      $(window).scroll(function() {
-        if ($(window).scrollTop() + $(window).height() == $(document).height()) {
-          $('#load-more-btn').click();
-        }
-      });
-    });
-  </script>
+            // When the user scrolls to the bottom of the page, load the next batch of messages
+            $(window).scroll(function () {
+                if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+                    $('#load-more-btn').click();
+                }
+            });
+        });
+    </script>
 {% endblock %}

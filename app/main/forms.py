@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import TextAreaField, StringField, PasswordField, BooleanField, SubmitField, EmailField
-from wtforms.validators import Length, DataRequired, Email, EqualTo, ValidationError
+from flask_wtf.file import FileField, FileAllowed
+from wtforms import TextAreaField, StringField, SubmitField, EmailField
+from wtforms.validators import Length, DataRequired, ValidationError
 from app.models import User
 from flask_babel import lazy_gettext as _1, _
 from flask import request

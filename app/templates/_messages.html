@@ -7,7 +7,7 @@
         <td>
             <div class="nav nav-divider">
                 <h6 class="nav-item card-title mb-0"><a href="{{ url_for('main.user', username=post.author.username) }}">{{ post.author.username }}</a></h6>
-                 <span class="small">{{ moment(post.timestamp).fromNow() }}</span>
+                 <span class="nav-item small">{{ moment(post.timestamp).fromNow() }}</span>
             </div>
             <p><span id="post{{ post.id }}">{{ post.author.username }}:   {{ post.body }}</span></p>
     {% else %}
@@ -19,7 +19,7 @@
         <td>
             <div class="nav nav-divider">
                 <h6 class="nav-item card-title mb-0"><a href="{{ url_for('main.user', username=post.recipient.username) }}">{{ post.recipient.username }}</a></h6>
-                <span class="small">{{ moment(post.timestamp).fromNow() }}</span>
+                <span class="nav-item small">{{ moment(post.timestamp).fromNow() }}</span>
             </div>
             <p><span id="post{{ post.id }}">Me:  {{ post.body }}</span></p>
 {% endif %}

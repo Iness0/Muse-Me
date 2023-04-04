@@ -1,4 +1,3 @@
-<!-- Post Field -->
 <div class="card card-body">
     <div class="d-flex mb-3">
         <!-- Avatar -->
@@ -11,17 +10,18 @@
         <!-- Post input -->
         <form class="w-100" method="POST" action="{{ url_for('main.index') }}">
             {{ form._csrf_token }}
-            {{ form.post(class_='form-control pe-4 border-0', rows='2', data_autoresize='', placeholder="Share your thoughts...") }}
+            {{ form.post(class_='form-control pe-4 border-0', data_autoresize='', placeholder="Share your thoughts...") }}
 
 
-            <!-- Share feed toolbar START -->
+            <button class="nav-link bg-transparent px-4 pb-5 position-absolute top-50 end-0 translate-middle-y border-0" type="submit">
+                <i class="bi bi-send-fill"> </i>
+            </button>
             <ul class="nav nav-pills nav-stack small fw-normal">
                 <li class="nav-item">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"
+                    <button type="button" class="nav-link bg-light py-1 px-2 m-1" data-toggle="modal" data-target="#uploadModal"
                             id="upload-btn">
-                        <i class="bi bi-image-fill text-success pe-2"></i>Photo
+                        <i class="bi bi-image-fill text-success pe-2"></i>Images
                     </button>
-                    <button type="submit" class="btn btn-primary"><i class="bi bi-send-fill"></i> Send</button>
                 </li>
             </ul>
         </form>
@@ -31,15 +31,11 @@
 <div class="modal fade" id="upload-modal" tabindex="-1" aria-labelledby="upload-modal-label" aria-hidden="true">
     <div class="modal-dialog" role="document" >
         <div class="modal-content" style="max-width: 130%;">
-            <!-- Modal feed header START -->
             <div class="modal-header">
                 <h5 class="modal-title" id="feedActionPhotoLabel">Add post photo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <!-- Modal feed header END -->
-            <!-- Modal feed body START -->
             <div class="modal-body">
-                <!-- Add Feed -->
                 <div class="d-flex m-3">
                     <!-- Avatar -->
                     <div class="avatar avatar-xs me-2">
@@ -48,7 +44,6 @@
                              alt="avatar">
 
                     </div>
-                    <!-- Feed box  -->
                     <form class="w-100" action="" method="POST" enctype="multipart/form-data">
                         {{ form.hidden_tag() }}
                         {{ form.post(class_="form-control pe-4 fs-3 lh-1 border-0", id_='droptext', rows="2", placeholder="Share your thoughts...") }}
@@ -62,7 +57,6 @@
                             <div class="dz-message">
                                 <i class="bi bi-images display-3"></i>
                                 <p>Drag here or click to upload photo.</p>
-
                             </div>
                             {% for error in form.image.errors %}
                                 <span class="help-block">{{ error }}</span>
@@ -71,7 +65,6 @@
                     </form>
                 </div>
             </div>
-
             <div class="modal-footer ">
                 <!-- Button -->
                 <button type="button" class="btn btn-danger-soft me-2" data-bs-dismiss="modal">Cancel</button>
@@ -80,8 +73,6 @@
         </div>
     </div>
 </div>
-<!-- Modal feed footer -->
-<!-- modals END -->
 <script>
     let uploadUrl = "{{ url_for('main.index') }}";
 </script>
@@ -92,4 +83,5 @@
             $("#upload-modal").modal("show");
         });
     });
+
 </script>

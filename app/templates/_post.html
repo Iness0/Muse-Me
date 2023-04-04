@@ -33,7 +33,7 @@
                 data-type="post">
                 <a href="#" class="like-btn">
                  {% set reaction_to_emoji = {'like': '👍', 'love': '❤️', 'laugh': '😂', 'wow': '😮', 'sad': '😢', 'angry': '😠'} %}
-                    <span class="current-react" >
+                    <span class="current-react nav-link" >
                     {% if current_user.has_reacted(post.id, 'post') is false%}
                     <i class="bi bi-hand-thumbs-up"></i>
                     {% else %}
@@ -256,7 +256,6 @@
             const comments = await response.json();
             // Find the comments container for the specific post
             const commentsContainer = btn.closest('.card-body').querySelector('.comments');
-            // set emojis, while rendering new comments
             function renderComment(comment) {
                 const reactionToEmoji = {
                     'like': '👍',
@@ -308,7 +307,6 @@
             }
             // Insert the comments into the appropriate div
             comments.forEach(comment => {
-                // Create and insert the comment element into the container
                 const commentElement = document.createElement('li');
                 commentElement.classList.add('comment-item');
                 commentElement.innerHTML = renderComment(comment);
@@ -320,4 +318,12 @@
             btn.style.display = 'none';
         });
     });
+      const textareas = document.querySelectorAll('textarea[data-autoresize]')
+  textareas.forEach(textarea => {
+    textarea.style.boxSizing = 'border-box'
+    textarea.addEventListener('input', event => {
+      event.target.style.height = 'auto'
+      event.target.style.height = event.target.scrollHeight + 'px'
+    })
+  })
 </script>

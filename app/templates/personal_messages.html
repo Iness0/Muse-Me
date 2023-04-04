@@ -15,14 +15,14 @@
       </p>
   </div>
       <div class="card-body">
-        <div class="chat-window">
+        <div class="chat-window bg-light border-0">
           <table class="table  table-borderless" id="message-table">
 
               {% for post in messages %}
                   {% if post.recipient.id==current_user.id %}
-                      <tr class='message message-right'
+                      <tr class='message message-right bg-dark-subtle'
                           onmouseover="this.style.backgroundColor='#e6d2d2';"
-                          onmouseout="this.style.backgroundColor='#e6e6e6';">
+                          onmouseout="this.style.backgroundColor='transparent';">
                           <td style="width: 70px">
                               <img class="avatar avatar-story" src="{{ url_for('static', filename='uploads/' + post.author.avatar) if post.author.avatar else post.author.avatar_alt(70) }}" alt="avatar">
                           </td>
@@ -36,7 +36,7 @@
                               <p><span id="post{{ post.id }}">{{ post.body }}</span></p>
                           </td>
                           {% else %}
-                      <tr class='message message-left'
+                      <tr class='message message-left bg-light-subtle'
                           onmouseover="this.style.backgroundColor='#e6d2d2';"
                           onmouseout="this.style.backgroundColor='transparent';">
                       <td style="width: 70px">
@@ -76,9 +76,6 @@
         </div>
       </div>
       <div class="text-center">
-{#        <button id="load-more-btn" {% if next_url == none %} style="display: none;"   {% endif %}#}
-{#                data-next-url="{{ next_url|safe }}" class="btn btn-primary">Load More#}
-{#        </button>#}
     </div>
   <div class="card-footer">
           <form class="nav nav-item w-100 position-relative message-form" action="" method="post">

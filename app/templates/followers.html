@@ -10,17 +10,18 @@
                 <div class="d-md-flex align-items-center mb-4">
                     <!-- Avatar -->
                     <div class="avatar me-3 mb-3 mb-md-0">
-                        <a href="#!"> <img class="avatar-img rounded-circle" src="{{ url_for('static', filename='uploads/' + follower.avatar) if follower.avatar else follower.avatar_alt(35) }}" alt="avatar">
+                        <a href="#!"> <img class="avatar-img rounded-circle"
+                                           src="{{ url_for('static', filename='uploads/' + follower.avatar) if follower.avatar else follower.avatar_alt(35) }}"
+                                           alt="avatar">
                         </a>
                     </div>
-                    <!-- Info -->
                     <div class="w-100">
                         <div class="d-sm-flex align-items-start">
                             <h6 class="mb-0"><a
                                     href="{{ url_for('main.user', username=follower.username) }}">{{ follower.username }} </a>
                             </h6>
                             {% if follower.about_me %}
-                            <p class="small ms-sm-2 mb-0">{{ follower.about_me }}</p>
+                                <p class="small ms-sm-2 mb-0">{{ follower.about_me }}</p>
                             {% endif %}
                         </div>
 

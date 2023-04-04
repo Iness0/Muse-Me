@@ -1,8 +1,7 @@
 import os
 
-from flask import render_template, flash, redirect, url_for, request, g, \
-    jsonify, current_app, abort
-from flask_login import current_user, login_required
+from flask import flash, redirect, url_for, current_app
+from flask_login import current_user
 from werkzeug.utils import secure_filename
 
 from app import db

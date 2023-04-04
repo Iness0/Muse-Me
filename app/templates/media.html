@@ -1,106 +1,103 @@
-
-    {% extends 'sub_main.html' %}
-    {% block css %}
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/media.css') }}">
-    {% endblock %}
+{% extends 'sub_main.html' %}
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/media.css') }}">
+{% endblock %}
 {% block tab %}
     <div class="card">
-              <!-- Card header START -->
-              <div class="card-header d-sm-flex align-items-center justify-content-between border-0 pb-0">
-                <h5 class="card-title">Photos</h5>
-                <!-- Button modal -->
-              </div>
-              <!-- Card header END -->
-              <!-- Card body START -->
-              <div class="card-body">
-                <!-- Photos of you tab START -->
-                <div class="photos_row_wrap">
-                  <!-- Add photo START -->
+        <div class="card-header d-sm-flex align-items-center justify-content-between border-0 pb-0">
+            <h5 class="card-title">Photos</h5>
+        </div>
+        <div class="card-body">
+            <div class="photos_row_wrap">
                 {% if user == current_user %}
-                        <div class="photos_row">
-                            <div class="border border-2 py-5 border-dashed h-100 rounded text-center d-flex align-items-center justify-content-center position-relative">
-                            <form action="{{ url_for('main.upload_image') }}" method="POST" enctype="multipart/form-data">
+                    <div class="photos_row">
+                        <div class="border border-2 py-5 border-dashed h-100 rounded text-center d-flex align-items-center justify-content-center position-relative">
+                            <form action="{{ url_for('main.upload_image') }}" method="POST"
+                                  enctype="multipart/form-data">
                                 <input type="file" name="image" id="imageUpload" style="display: none;"/>
                                 <a class="stretched-link" href="#!" id="addImage">
                                     <i class="fa-solid fa-camera-retro fs-1"></i>
                                     <h6 class="mt-2">Add photo</h6>
                                 </a>
                             </form>
-                            </div>
                         </div>
+                    </div>
                 {% endif %}
-                  <!-- Add photo END -->
-
-                  <!-- Photo item START -->
-                      {% for image in gallery %}
-                          <div class="photos_row" style="background-image: url('{{ url_for('static', filename='uploads/' + image.filename) }}');" aria-label="Photo">
-                              <a href="{{ url_for('static', filename='uploads/' + image.filename) }}" class="glightbox3" data-gallery="gallery1"></a>
-                              <ul class="nav nav-stack py-2 small like-page" data-emoji="{{ image.id }}" >
-                                  <li class="nav-item">
-                                      <a class="nav-link like-btn" href="#!">{% if not current_user.has_reacted(image.id, 'image') %}<i class="bi bi-heart text-danger pe-1"></i>{% else %}❤️ {% endif %}{{ image.reactions.count() }} </a>
-                                  </li>
-                              </ul>
-                          </div>
-                          <!-- likes -->
-                    {% endfor %}
-                <!-- Photos of you tab END -->
-                  </div>
-              </div>
+                {% for image in gallery %}
+                    <div class="photos_row"
+                         style="background-image: url('{{ url_for('static', filename='uploads/' + image.filename) }}');"
+                         aria-label="Photo">
+                        <a href="{{ url_for('static', filename='uploads/' + image.filename) }}" class="glightbox3"
+                           data-gallery="gallery1"></a>
+                        <ul class="nav nav-stack py-2 small like-page" data-emoji="{{ image.id }}">
+                            <li class="nav-item">
+                                <a class="nav-link like-btn" href="#!">
+                                    {% if not current_user.has_reacted(image.id, 'image') %}
+                                        <i class="bi bi-heart text-danger pe-1"></i>{% else %}
+                                        ❤️ {% endif %}{{ image.reactions.count() }} </a>
+                            </li>
+                        </ul>
+                    </div>
+                {% endfor %}
             </div>
+        </div>
+    </div>
 
-<script>
-    const reactUrl = '{{ url_for('main.react') }}'
-    const likeContainers = document.querySelectorAll('.like-page');
-    function getEmoji(response) {
-        const reactionToEmoji = {
-            'like': '👍',
-            'love': '❤️',
-            'laugh': '😂',
-            'wow': '😮',
-            'sad': '😢',
-            'angry': '😠',
-            'empty': '<i class="bi bi-heart pe-1"></i>'
+    <script>
+        const reactUrl = '{{ url_for('main.react') }}'
+        const likeContainers = document.querySelectorAll('.like-page');
+
+        function getEmoji(response) {
+            const reactionToEmoji = {
+                'like': '👍',
+                'love': '❤️',
+                'laugh': '😂',
+                'wow': '😮',
+                'sad': '😢',
+                'angry': '😠',
+                'empty': '<i class="bi bi-heart pe-1"></i>'
+            }
+            let emote = response.emoji;
+            let count = response.likes_total
+
+            return `${reactionToEmoji[emote]}  ${count}`
         }
-        let emote = response.emoji;
-        let count = response.likes_total
 
-        return `${reactionToEmoji[emote]}  ${count}`
-    }
-    likeContainers.forEach(likeContainer => {
-        const likeBtn = likeContainer.querySelector('.like-btn');
-        const id = likeContainer.getAttribute('data-emoji');
+        likeContainers.forEach(likeContainer => {
+            const likeBtn = likeContainer.querySelector('.like-btn');
+            const id = likeContainer.getAttribute('data-emoji');
 
-        likeBtn.addEventListener('click', (event) => {
+            likeBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                console.log(`this:'like' entered`);
+                $.ajax({
+                    url: reactUrl,
+                    method: 'POST',
+                    data: {
+                        reaction: 'love',
+                        id: id,
+                        type: 'image'
+
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        likeBtn.innerHTML = getEmoji(response);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            })
+
+        });
+        document.getElementById("addImage").addEventListener("click", function (event) {
             event.preventDefault();
-            console.log(`this:'like' entered`);
-            $.ajax({
-                url: reactUrl,
-                method: 'POST',
-                data: {
-                    reaction: 'love',
-                    id: id,
-                    type: 'image'
+            document.getElementById("imageUpload").click();
+        });
 
-                },
-                success: function (response) {
-                    console.log(response);
-                    likeBtn.innerHTML = getEmoji(response);
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
-        })
+        document.getElementById("imageUpload").addEventListener("change", function () {
+            this.form.submit();
+        });
 
-    });
-    document.getElementById("addImage").addEventListener("click", function (event) {
-        event.preventDefault();
-        document.getElementById("imageUpload").click();
-    });
-
-    document.getElementById("imageUpload").addEventListener("change", function () {
-        this.form.submit();
-    });
-
-</script>
+    </script>
 {% endblock %}
