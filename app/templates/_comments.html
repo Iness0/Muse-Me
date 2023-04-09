@@ -15,7 +15,7 @@
                             <h6 class="mb-1"><a
                                     href="{{ url_for('main.user', username=comment.author.username) }}"> {{ comment.author.username }} </a>
                             </h6>
-                            <small class="ms-2">{{ moment(comment.timestamp).fromNow() }}</small>
+                            <span class="nav-item small">{{ moment(comment.timestamp).fromNow() }}</span>
                         </div>
                         <p class="small mb-0">{{ comment.body }}</p>
                     </div>
@@ -25,7 +25,7 @@
                             data-type="comment">
                             <a href="#" class="like-btn">
                                 {% set reaction_to_emoji = {'like': '👍', 'love': '❤️', 'laugh': '😂', 'wow': '😮', 'sad': '😢', 'angry': '😠'} %}
-                                <span class="current-react">{% if current_user.has_reacted(comment.id, 'comment') is false %}
+                                <span class="current-react nav-link">{% if current_user.has_reacted(comment.id, 'comment') is false %}
                                     <i class="bi bi-hand-thumbs-up"></i>
                                     {% else %}{{ reaction_to_emoji[comment.reactions[0]|string] }} {% endif %}Reacted: ({{ comment.count_reactions(comment.id) }})</span></a>
                             <div class="emoji-container">

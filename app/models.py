@@ -52,7 +52,10 @@ class SearchMixin(object):
 
     @classmethod
     def get_all_tags(cls):
-        total = query_hashtag(cls.__tablename__)
+        try:
+            total = query_hashtag(cls.__tablename__)
+        except Exception as e:
+            return 'None found'
         if len(total) == 0:
             return 'None found'
         return total[:10]
@@ -207,21 +210,20 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
         db.session.add(n)
         return n
 
-    @classmethod
-    def has_reacted(cls, target_id, reaction_type):
+    def has_reacted(self, target_id, reaction_type):
         if reaction_type == 'post':
             emoji_exists = db.session.query(exists().where(
-                Reaction.user_id == cls.id,
+                Reaction.user_id == self.id,
                 Reaction.post_id == target_id
             )).scalar()
         elif reaction_type == 'comment':
             emoji_exists = db.session.query(exists().where(
-                Reaction.user_id == cls.id,
+                Reaction.user_id == self.id,
                 Reaction.comment_id == target_id
             )).scalar()
         elif reaction_type == 'image':
             emoji_exists = db.session.query(exists().where(
-                Reaction.user_id == cls.id,
+                Reaction.user_id == self.id,
                 Reaction.image_id == target_id
             )).scalar()
         else:

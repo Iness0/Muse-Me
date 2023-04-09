@@ -35,15 +35,12 @@ def index():
             language = detect(text)
         except LangDetectException:
             language = ''
-        images = request.files.getlist('images[]')
-        if images and any(image for image in images):
-            image_file = request.files.getlist('images[]')
+        image_file = request.files.getlist('images[]')
+        if image_file and any(image for image in image_file):
             post = Post(body=text, author=current_user, language=language)
             for image in image_file:
-                filename = save_image(image)
-                image_new = Image(filename=filename, user_id=current_user.id)
-                image_new.post = post
-                db.session.add(image_new)
+                new_image = save_image(image)
+                new_image.post = post
         else:
             post = Post(body=text, author=current_user, language=language)
         db.session.add(post)
@@ -64,7 +61,7 @@ def index():
         amount = post.comments.count()
         post.show_more_comments = amount > 3
 
-    return render_template('index.html', form=form, title='Home', posts=posts.items,
+    return render_template('index.html', form=form, title=(_('Home')), posts=posts.items,
                            next_url=next_url, prev_url=prev_url, hashtag_counts=hashtag_counts,
                            popular_people=popular_people, comment_form=comment_form)
 
@@ -78,9 +75,9 @@ def add_comment():
         comment = Comment(body=form.body.data, user_id=current_user.id, post_id=post_id)
         db.session.add(comment)
         db.session.commit()
-        flash('Your comment has been added.')
-        return redirect(url_for('main.index'))
-    return redirect(url_for('main.index'))
+        flash(_('Your comment has been added.'))
+        return redirect(request.referrer)
+    return redirect(request.referrer)
 
 
 def create_or_update_reaction(user_id, target_id, emoji, target_type):
@@ -138,7 +135,7 @@ def followers(username, relation):
     else:
         abort(404)
     popular_people, hashtag_counts, images, form = main_variables(user)
-    return render_template('followers.html', title=user.username, user=user, users=users,
+    return render_template('followers.html', title=username, user=user, users=users,
                            form=form, images=images, hashtag_counts=hashtag_counts, popular_people=popular_people)
 
 
@@ -154,10 +151,10 @@ def edit_profile():
         current_user.last_name = form.last_name.data
         # avatar
         if form.avatar.data:
-            current_user.avatar = save_image(form.avatar.data)
+            current_user.avatar = save_image(form.avatar.data).filename
             # Save background image
         if form.background_image.data:
-            current_user.background_image = save_image(form.background_image.data)
+            current_user.background_image = save_image(form.background_image.data).filename
         db.session.commit()
         print(current_user.avatar)
         flash(_('Your changes have been saved.'))
@@ -199,10 +196,10 @@ def unfollow(username):
             return redirect(url_for('main.user', username=username))
         current_user.unfollow(user)
         db.session.commit()
-        flash(f'You are no longer following {username}!')
-        return redirect(url_for('main.user', username=username))
+        flash(_(f'You are no longer following {username}!'))
+        return redirect(request.referrer or url_for('main.user', username=username))
     else:
-        return redirect(url_for('main.index'))
+        return redirect(request.referrer or url_for('main.index'))
 
 
 @bp.route('/explore')
@@ -257,7 +254,7 @@ def messages():
         user.add_notification('unread_message_count', user.new_messages())
         db.session.add(msg)
         db.session.commit()
-        flash('Your message has been sent.')
+        flash(_('Your message has been sent.'))
         return redirect(url_for('main.messages', user=id))
     if id:
         return handle_personal_messages(page, id, user)
@@ -331,11 +328,11 @@ def load_comments(post_id):
         comments = Comment.query.filter_by(post_id=post_id).order_by(Comment.timestamp.asc()).offset(3).all()
         return jsonify([{'id': comment.id, 'author': comment.author.username, 'body': comment.body,
                          'timestamp': comment.timestamp,
-                         'reactions': comment.first_reaction_emoji(), 'avatar': comment.author.avatar(32),
+                         'reactions': comment.first_reaction_emoji(),
+                         'avatar': comment.author.avatar if comment.author.avatar is not None else comment.author.avatar_alt(30),
                          'hasReacted': current_user.has_reacted(comment.id, 'comment'),
                          'count_reactions': comment.count_reactions(comment.id),
-                         }
-                        for comment in comments])
+                         } for comment in comments])
 
     else:
         return jsonify({'error': 'Post not found'}), 404
@@ -376,12 +373,12 @@ def liked(username):
 @login_required
 def upload_image():
     if 'image' not in request.files:
-        flash('No file part')
+        flash(_('File was not selected'))
         return redirect(request.url)
 
     file = request.files['image']
     if file.filename == '':
-        flash('No selected file')
+        flash(_('File was not selected'))
         return redirect(request.url)
 
     if file:
@@ -394,7 +391,7 @@ def upload_image():
         db.session.add(image)
         db.session.commit()
 
-        flash('Image uploaded successfully')
+        flash(_('Image uploaded successfully'))
         return redirect(url_for('main.media', username=current_user.username))
 
 

@@ -34,7 +34,7 @@
                 <a href="#" class="like-btn">
                  {% set reaction_to_emoji = {'like': '👍', 'love': '❤️', 'laugh': '😂', 'wow': '😮', 'sad': '😢', 'angry': '😠'} %}
                     <span class="current-react nav-link" >
-                    {% if current_user.has_reacted(post.id, 'post') is false%}
+                    {% if current_user.has_reacted(post.id, 'post') is false %}
                     <i class="bi bi-hand-thumbs-up"></i>
                     {% else %}
                         {{ reaction_to_emoji[post.reactions[0]|string] }} {% endif %} Reacted: ({{ post.count_reactions(post.id) }})</span></a>
@@ -280,14 +280,14 @@
         <div class="bg-light rounded-start-top-0 p-3 rounded">
           <div class="d-flex justify-content-between">
             <h6 class="mb-1"><a href="/user/${comment.author}">${comment.author}</a></h6>
-            <small class="ms-2">${timeAgo}</small>
+            <span class="nav-link small">${timeAgo}</span>
           </div>
           <p class="small mb-0">${comment.body}</p>
         </div>
         <ul class="nav nav-stack py-3 small">
           <li class="nav-item like-container" data-post="${comment.id}" data-current-emoji="${comment.reactions || 'like'}" data-type="comment">
             <a href="#" class="like-btn">
-              <span class="current-react">${currentReact} Reacted: (${comment.count_reactions})</span>
+              <span class="current-react nav-link">${currentReact} Reacted: (${comment.count_reactions})</span>
             </a>
             <div class="emoji-container">
               <a href="#" class="emoji" data-reaction="like">👍</a>

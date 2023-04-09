@@ -2,7 +2,7 @@
     <div class="offcanvas-body d-block px-2 px-lg-0">
         <div class="card overflow-hidden">
             <div class="h-50px"
-                 style="background-image: url('{{ url_for('static', filename='uploads/' + current_user.background_image) if current_user.background_image else url_for('static', filename='images/blog_main.png') }}'); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                 style="background-image: url('{{ url_for('static', filename='uploads/' + current_user.background_image) if current_user.background_image else url_for('static', filename='images/blog_main.avif') }}'); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
             <div class="card-body pt-0">
                 <div class="text-center">
                     <!-- Avatar -->
@@ -12,7 +12,7 @@
                                 src="{{ url_for('static', filename='uploads/' + current_user.avatar) if current_user.avatar else current_user.avatar_alt(70) }}"
                                 alt=""></a>
                     </div>
-                    <h5 class="mb-0"><a
+                    <h5 class="mb-3"><a
                             href="{{ url_for('main.user', username=current_user.username) }}">{{ current_user.username }} </a>
                     </h5>
                     {% if current_user.about_me is not none %}
@@ -41,7 +41,7 @@
                 <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="{{ url_for('main.user', username=current_user.username) }}">
+                           href="{{ url_for('main.index', username=current_user.username) }}">
                             <i
                                     class="bi bi-person-circle" alt=""></i><span> Feed </span></a>
                     </li>

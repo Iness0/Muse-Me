@@ -14,7 +14,6 @@ from elasticsearch import Elasticsearch
 from redis import Redis
 import rq
 
-
 migrate = Migrate()
 db = SQLAlchemy()
 login = LoginManager()
@@ -92,4 +91,3 @@ def get_locale():
 
 
 from app import models
-

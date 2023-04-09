@@ -13,10 +13,10 @@ class EditProfileForm(FlaskForm):
     last_name = StringField(_('Last name'))
     about_me = TextAreaField(_1('About me'), validators=[Length(min=0, max=300)])
     avatar = FileField('Image', validators=[
-        FileAllowed(['jpg', 'png'], 'Images only!')
+        FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')
     ])
     background_image = FileField('Image', validators=[
-        FileAllowed(['jpg', 'png'], 'Images only!')
+        FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')
     ])
     submit = SubmitField(_1('Submit'))
 

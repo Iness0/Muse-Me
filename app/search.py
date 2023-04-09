@@ -2,6 +2,13 @@ from flask import current_app
 import re
 
 
+
+
+def create_index_if_not_exists(es, index_name):
+    if not es.indices.exists(index=index_name):
+        es.indices.create(index=index_name)
+
+
 def add_to_index(index, model):
     if not current_app.elasticsearch:
         return

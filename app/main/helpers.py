@@ -36,10 +36,8 @@ def save_image(image):
         flash(_('Image extension not allowed'))
         return 1
     filename = secure_filename(image.filename)
-    print(filename)
     image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-    print(image_path)
     image.save(image_path)
     image = Image(filename=filename, user_id=current_user.id)
     db.session.add(image)
-    return filename
+    return image

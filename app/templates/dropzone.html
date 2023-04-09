@@ -11,17 +11,17 @@
         <form class="w-100" method="POST" action="{{ url_for('main.index') }}">
             {{ form._csrf_token }}
             {{ form.post(class_='form-control pe-4 border-0', data_autoresize='', placeholder="Share your thoughts...") }}
-
-
-            <button class="nav-link bg-transparent px-4 pb-5 position-absolute top-50 end-0 translate-middle-y border-0" type="submit">
-                <i class="bi bi-send-fill"> </i>
-            </button>
             <ul class="nav nav-pills nav-stack small fw-normal">
                 <li class="nav-item">
-                    <button type="button" class="nav-link bg-light py-1 px-2 m-1" data-toggle="modal" data-target="#uploadModal"
+                    <button type="button" class="nav-link bg-light py-1 px-2 mt-1" data-toggle="modal"
+                            data-target="#uploadModal"
                             id="upload-btn">
                         <i class="bi bi-image-fill text-success pe-2"></i>Images
                     </button>
+                </li>
+                <li class="ms-auto">
+                    <button class="nav-link bg-light py-1 px-2 mt-1" type="submit">
+                        <i class="bi bi-envelope-fill text-info pe-2"></i>Send Post</button>
                 </li>
             </ul>
         </form>
@@ -29,7 +29,7 @@
 </div>
 <!-- Modals START-->
 <div class="modal fade" id="upload-modal" tabindex="-1" aria-labelledby="upload-modal-label" aria-hidden="true">
-    <div class="modal-dialog" role="document" >
+    <div class="modal-dialog" role="document">
         <div class="modal-content" style="max-width: 130%;">
             <div class="modal-header">
                 <h5 class="modal-title" id="feedActionPhotoLabel">Add post photo</h5>
@@ -52,7 +52,7 @@
                         {% endfor %}
                         <span style="color: red;" id='error'></span>
                         <!-- Dropzone photo START -->
-                    <br>
+                        <br>
                         <div class="dropzone dropzone-default card shadow-none dz-clickable" id="my-dropzone">
                             <div class="dz-message">
                                 <i class="bi bi-images display-3"></i>
@@ -75,13 +75,10 @@
 </div>
 <script>
     let uploadUrl = "{{ url_for('main.index') }}";
-</script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/dropzoe.js') }}"></script>
-<script>
     $(document).ready(function () {
-        $("#upload-btn").click(function () {
-            $("#upload-modal").modal("show");
-        });
+    $("#upload-btn").click(function () {
+        $("#upload-modal").modal("show");
     });
-
+});
 </script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/dropzone.js') }}"></script>
