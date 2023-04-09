@@ -77,7 +77,8 @@ input.is-invalid:focus {
 
 a {
     text-decoration: none;
-    color: #faf34f;
+    color: #4f9ef8;
+    font-weight: bold;
 }
 
 a:hover {

@@ -27,12 +27,12 @@
                     <label class="form-check-label" for="flexSwitchCheckDefault">Remember me</label>
                     {{ form.remember_me(class_="form-check-input", role="switch", id="flexSwitchCheckDefault") }}
                 </div>
-            <p>{{ form.submit(class_="btn btn-info-soft mt-3") }}</p>
+                <p>{{ form.submit(class_="btn btn-info-soft mt-3") }}</p>
             </div>
         </form>
         <div class="LogOptions">
-        <p>New User? <a href="{{ url_for('auth.register') }}">Click to Register!</a></p>
-        <p>Forgot Your Password? <a href="{{ url_for('auth.reset_password_request') }}">Reset</a></p>
-            </div>
+            <p>New User? <a href="{{ url_for('auth.register') }}">Click to Register!</a></p>
+            <p>Forgot Your Password? <a href="{{ url_for('auth.reset_password_request') }}">Reset</a></p>
+        </div>
     </div>
 {% endblock %}

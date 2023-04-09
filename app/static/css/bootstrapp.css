@@ -15882,12 +15882,7 @@ a.badge:hover {
   color: var(--bs-primary);
 }
 
-/* rtl:raw:
-.glightbox-clean .gclose, .glightbox-modern .gclose{
-  right: auto !important;
-  left: 20px;
-}
-*/
+
 .password-strength-meter {
   background-color: var(--bs-gray-200) !important;
 }
@@ -17602,3 +17597,4 @@ a.badge:hover {
 
 /*User CSS*/
 /*# sourceMappingURL=style.css.map */
+

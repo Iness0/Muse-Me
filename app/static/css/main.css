@@ -1,50 +1,42 @@
-/*main {*/
-/*    background-image: url('../images/city_back.png');*/
-/*    background-size: 1920px 1080px;*/
-/*    background-position: center top;*/
-/*    background-color: rgba(0, 0, 0);*/
-/*    color: white;*/
-/*}*/
+
 .non-wide {
-  max-width: 400px;
-  max-height: 200px;
+    max-width: 400px;
+    max-height: 200px;
 }
 
 .like-container {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 .like-btn {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 20px;
-  color: #444;
-  text-decoration: none;
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: #444;
+    text-decoration: none;
 }
 
 .emoji-container {
-  position: absolute;
-  top: -50px;
-  left: 0;
-  width: 160px;
-  display: none;
-  padding: 8px;
-  background-color: #fff;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-  border-radius: 6px;
-  z-index: 1;
+    position: absolute;
+    top: -50px;
+    left: 0;
+    width: 160px;
+    display: none;
+    padding: 8px;
+    background-color: #fff;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    border-radius: 6px;
+    z-index: 1;
 }
 
 .emoji-container a {
-  margin-right: 8px;
-  font-size: 18px;
+    margin-right: 8px;
+    font-size: 18px;
     flex-direction: row;
-  justify-content: space-around;
-  display: flex;
-
+    justify-content: space-around;
+    display: flex;
 }
-
 
 #hello {
     justify-content: center;
@@ -55,39 +47,43 @@
 .edit-btn {
     font-size: 0.8rem;
 }
+
 .btn-blight-soft {
-  color: #54cbff;
-  background-color: rgba(79, 158, 248, 0.1);
-        font-size: 0.8rem;
+    color: #54cbff;
+    background-color: rgba(79, 158, 248, 0.1);
+    font-size: 0.8rem;
 
 }
+
 .btn-blight-soft:active, .btn-blight-soft:hover, .btn-blight-soft:focus {
-  color: white !important;
-  background-color: #54cbff !important;
-  border-color: #b9d9ff !important;
+    color: white !important;
+    background-color: #54cbff !important;
+    border-color: #b9d9ff !important;
 }
+
 .card-img {
     max-width: 450px;
     max-height: 4500px;
 }
+
 tr:hover {
     background-color: black ! important;
 }
 
-    .image-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 300px));
-        grid-gap: 10px;
-        grid-auto-rows: 200px;
-    }
+.image-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 300px));
+    grid-gap: 10px;
+    grid-auto-rows: 200px;
+}
 
-    .image-wrapper {
-        position: relative;
-        overflow: hidden;
-    }
+.image-wrapper {
+    position: relative;
+    overflow: hidden;
+}
 
-    .image-wrapper img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-    }
+.image-wrapper img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
