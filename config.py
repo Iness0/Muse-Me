@@ -20,7 +20,7 @@ class Config(object):
     SENDGRID_EMAIL = os.environ.get('SENDGRID_EMAIL')
     ADMINS = os.environ.get('ADMINS')
     POSTS_PER_PAGE = 7
-    LANGUAGES = ['en', 'ru', 'he']
+    LANGUAGES = ['en', 'ru']
     ELASTICSEARCH = os.environ.get('ELASTICSEARCH_URL')
     ELASTICSEARCH_LOGIN = os.environ.get('ELASTICSEARCH_LOGIN')
     ELASTICSEARCH_PASSWORD = os.environ.get('ELASTICSEARCH_PASSWORD')

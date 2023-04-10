@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 services:
     muse_me:
       build: .
@@ -11,23 +11,10 @@ services:
         - elasticsearch
         - mysql
         - redis
-      environment:
-        - SECRET_KEY=${SECRET_KEY}
-        - MAIL_SERVER=smtp.googlemail.com
-        - MAIL_PORT=587
-        - MAIL_USE_TLS=true
-        - MAIL_USERNAME=$MAIL_USERNAME
-        - MAIL_PASSWORD=$MAIL_PASSWORD
-        - ELASTICSEARCH_URL=https://elasticsearch:9200
-        - ELASTICSEARCH_LOGIN=elastic
-        - ELASTICSEARCH_PASSWORD=evUIZakvL56r1fLXudt4
-        - ADMINS=$ADMINS
-        - REDIS_URL=redis://redis:6379/0
-        - DATABASE_URL=mysql+pymysql://muse_me:Mysql12404@mysql/muse_me
-      links:
-        - mysql
-        - redis
-        - elasticsearch
+      env_file:
+        - .env
+        - .flaskenv
+
 
     worker:
       build: .
@@ -39,22 +26,9 @@ services:
         - mysql
         - redis
         - muse_me
-      environment:
-        - SECRET_KEY=${SECRET_KEY}
-        - MAIL_SERVER=smtp.googlemail.com
-        - MAIL_PORT=587
-        - MAIL_USE_TLS=true
-        - MAIL_USERNAME=$MAIL_USERNAME
-        - MAIL_PASSWORD=$MAIL_PASSWORD
-        - ELASTICSEARCH_URL=https://elasticsearch:9200
-        - ELASTICSEARCH_LOGIN=elastic
-        - ELASTICSEARCH_PASSWORD=evUIZakvL56r1fLXudt4
-        - ADMINS=$ADMINS
-        - DATABASE_URL=mysql+pymysql://muse_me:Mysql12404@mysql/muse_me
-        - REDIS_URL=redis://redis:6379/0
-      links:
-        - mysql
-        - redis
+      env_file:
+        - .env
+        - .flaskenv
       entrypoint: venv/bin/rq worker --url redis://redis:6379/0 muse_me-tasks
 
     redis:
