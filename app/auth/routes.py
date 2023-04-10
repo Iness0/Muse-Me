@@ -14,6 +14,7 @@ from app.auth.email import send_password_reset_email
 
 @bp.before_request
 def before_request():
+    """Executed before each request. Sets up search form and locale."""
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
@@ -23,6 +24,7 @@ def before_request():
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    """Logs in the user."""
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = LoginForm()
@@ -42,6 +44,7 @@ def login():
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
+    """Registers a new user."""
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = RegisterForm()
@@ -57,12 +60,14 @@ def register():
 
 @bp.route('/logout')
 def logout():
+    """Logs out the user."""
     logout_user()
     return redirect(url_for('main.index'))
 
 
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
+    """Sends an email to the user to reset their password."""
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = ResetPasswordRequestForm()
@@ -77,6 +82,14 @@ def reset_password_request():
 
 @bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
+    """
+    Allows a user to reset their password.
+
+    :param token: A token to verify the user.
+    :type token: str
+    :return: If the user is authenticated, redirects to main index. If the user is not found, redirects to main index.
+             Otherwise, renders the reset password page and resets the user's password if the form is valid.
+    """
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     user = User.verify_reset_password(token)
@@ -93,6 +106,9 @@ def reset_password(token):
 
 @bp.route('/reset_password', methods=['POST'])
 def password_reset():
+    """
+    Allows a user to change their password.
+    """
     form = ResetPasswordFormAuthorized()
     if form.validate_on_submit():
         if current_user.check_password(form.password.data):

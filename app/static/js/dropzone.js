@@ -48,7 +48,6 @@ let myDropzone = new Dropzone("#my-dropzone", {
                 success: function (response) {
                     console.log(response);
                     window.location.reload();
-
                 },
                 error: function (xhr, status, error) {
                     console.log(error);

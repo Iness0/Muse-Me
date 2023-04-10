@@ -2,7 +2,7 @@ FROM python:3.10 as python-base
 RUN useradd muse_me
 
 # https://python-poetry.org/docs#ci-recommendations
-ENV POETRY_VERSION=1.2.0
+ENV POETRY_VERSION=1.4.0
 ENV POETRY_HOME=/opt/poetry
 ENV POETRY_VENV=/opt/poetry-venv
 
@@ -40,7 +40,7 @@ RUN venv/bin/pip install pymysql cryptography
 # Copy Application
 COPY app app
 COPY migrations migrations
-COPY main.py config.py boot.sh ./
+COPY muse_me.py config.py boot.sh ./
 
 #Additional setup
 RUN chmod +x boot.sh

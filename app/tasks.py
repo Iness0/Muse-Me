@@ -12,6 +12,12 @@ app.app_context().push()
 
 
 def _set_task_progress(progress):
+    """
+    Sets the progress of the current task.
+
+    Args:
+        progress (int): The progress of the task, expressed as a percentage.
+    """
     job = get_current_job()
     if job:
         job.meta['progress'] = progress
@@ -25,6 +31,12 @@ def _set_task_progress(progress):
 
 
 def export_posts(user_id):
+    """
+    Exports a user's posts to a JSON file and sends it to the user via email.
+
+    Args:
+        user_id (int): The ID of the user whose posts are to be exported.
+    """
     try:
         user = User.query.get(user_id)
         _set_task_progress(0)
@@ -34,14 +46,17 @@ def export_posts(user_id):
         for post in user.posts.order_by(Post.timestamp.asc()):
             data.append({'body': post.body,
                          'timestamp': post.timestamp.isoformat() + 'z'})
+
             time.sleep(5)
             i += 1
             _set_task_progress(100 * i // total_posts)
+        # Send the email with the JSON file as an attachment
         send_email('[Muse_me] Your posts',
-                   from_email=app.config['ADMINS'][0],
+                   from_email=app.config['SENDGRID_EMAIL'],
                    to=[user.email],
                    html_content=render_template('email/export_posts.html', user=user),
                    attachments=[('posts.json', json.dumps({'posts': data}, indent=4), 'application/json')])
     except:
+        # Log the error and set the task progress to 100% to indicate that the task failed
         _set_task_progress(100)
         app.logger.error('Unhandled exception', exc_info=sys.exc_info())

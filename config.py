@@ -29,4 +29,4 @@ class Config(object):
     STATIC_FOLDER = 'static'
     UPLOAD_FOLDER = 'app/static/uploads/'
     COMMENTS_AUTOLOAD = 3
-    ALLOWED_FILES = {'png', 'jpg', 'jpeg', 'gif'}
+    ALLOWED_FILES = {'png', 'jpg', 'jpeg', 'gif', 'JPG'}
