@@ -34,18 +34,14 @@ services:
     redis:
       image: redis
       container_name: redis
-      ports:
-        - "6379:6379"
+
       networks:
         - elastic
 
     elasticsearch:
       container_name: elasticsearch
       image: elasticsearch:8.7.0
-      restart: always
-      ports:
-        - "9200:9200"
-        - "9300:9300"
+
       networks:
         - elastic
       environment:
