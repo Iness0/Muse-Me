@@ -21,7 +21,8 @@
                 </li>
                 <li class="ms-auto">
                     <button class="nav-link bg-light py-1 px-2 mt-1" type="submit">
-                        <i class="bi bi-envelope-fill text-info pe-2"></i>Send Post</button>
+                        <i class="bi bi-envelope-fill text-info pe-2"></i>Send Post
+                    </button>
                 </li>
             </ul>
         </form>
@@ -51,7 +52,7 @@
                             <span style="color: red;">{{ error }}</span>
                         {% endfor %}
                         <span style="color: red;" id='error'></span>
-                        <!-- Dropzone photo START -->
+                        <!-- Dropzone photo  -->
                         <br>
                         <div class="dropzone dropzone-default card shadow-none dz-clickable" id="my-dropzone">
                             <div class="dz-message">
@@ -76,9 +77,9 @@
 <script>
     let uploadUrl = "{{ url_for('main.index') }}";
     $(document).ready(function () {
-    $("#upload-btn").click(function () {
-        $("#upload-modal").modal("show");
+        $("#upload-btn").click(function () {
+            $("#upload-modal").modal("show");
+        });
     });
-});
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/dropzone.js') }}"></script>

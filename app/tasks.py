@@ -45,11 +45,11 @@ def export_posts(user_id):
         total_posts = user.posts.count()
         for post in user.posts.order_by(Post.timestamp.asc()):
             data.append({'body': post.body,
-                         'timestamp': post.timestamp.isoformat() + 'z'})
-
+                         'timestamp': post.timestamp.isoformat() + 'Z'})
             time.sleep(5)
             i += 1
             _set_task_progress(100 * i // total_posts)
+
         # Send the email with the JSON file as an attachment
         send_email('[Muse_me] Your posts',
                    from_email=app.config['SENDGRID_EMAIL'],

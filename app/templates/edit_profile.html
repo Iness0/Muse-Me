@@ -8,7 +8,7 @@
                     <div class="card overflow-hidden">
                         <!-- Cover image -->
                         <div class="h-50px"
-                 style="background-image: url('{{ url_for('static', filename='uploads/' + current_user.background_image) if current_user.background_image else url_for('static', filename='images/blog_main.avif') }}'); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                             style="background-image: url('{{ url_for('static', filename='uploads/' + current_user.background_image) if current_user.background_image else url_for('static', filename='images/blog_main.avif') }}'); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
                         <div class="card-body pt-0">
                             <div class="text-center">
                                 <!-- Avatar -->
@@ -49,28 +49,27 @@
                                     <a class="nav-link"
                                        href="{{ url_for('main.user', username=current_user.username) }}">
                                         <i
-                                                class="bi bi-person-circle" alt=""></i><span> Feed </span></a>
+                                                class="bi bi-person-circle"></i><span> Feed </span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ url_for('main.explore') }}"><i class="bi bi-hash"
-                                                                                                alt=""></i><span>  Explore </span></a>
+                                    <a class="nav-link" href="{{ url_for('main.explore') }}"><i
+                                            class="bi bi-hash"></i><span>  Explore </span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ url_for('main.messages') }}"><i class="bi bi-envelope"
-                                                                                                 alt=""></i><span>  Messages</span></a>
+                                    <a class="nav-link" href="{{ url_for('main.messages') }}"><i
+                                            class="bi bi-envelope"></i><span>  Messages</span></a>
                                 </li>
                                 {% set new_messages = current_user.new_messages() %}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ url_for('main.messages') }}"> <i class="bi bi-bell"
-                                                                                                  alt=""></i><span>  Notifications:
+                                    <a class="nav-link" href="{{ url_for('main.messages') }}"> <i
+                                            class="bi bi-bell"></i><span>  Notifications:
                                         {% if new_messages %}
                                             {{ new_messages }}
                                         {% else %} 0 {% endif %}</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ url_for('auth.logout') }}"> <i
-                                            class="bi bi-box-arrow-left"
-                                            alt=""></i><span>  Log Out </span></a>
+                                            class="bi bi-box-arrow-left"></i><span>  Log Out </span></a>
                                 </li>
                             </ul>
                         </div>
@@ -83,7 +82,7 @@
 
                     <p class="small text-center mt-1">©2023 <a class="text-body" target="_blank"
                                                                href="https://www.linkedin.com/in/yury-ash-a74058253/">
-                        LinkedInYury </a></p>
+                        LinkedIn Yury </a></p>
                 </div>
             </div>
             <div class="col-lg-6 vstack gap-4">

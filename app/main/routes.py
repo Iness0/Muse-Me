@@ -156,7 +156,6 @@ def edit_profile():
         if form.background_image.data:
             current_user.background_image = save_image(form.background_image.data).filename
         db.session.commit()
-        print(current_user.avatar)
         flash(_('Your changes have been saved.'))
         return redirect(url_for('main.edit_profile'))
     elif request.method == 'GET':

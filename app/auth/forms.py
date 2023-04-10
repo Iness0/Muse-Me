@@ -6,18 +6,18 @@ from app.models import User
 
 
 class LoginForm(FlaskForm):
-    username = StringField(_1('Username'), validators=[DataRequired()])
-    password = PasswordField(_1('Password'), validators=[DataRequired()])
-    remember_me = BooleanField(_1('Remember Me'))
-    submit = SubmitField(_1('Sign In'))
+    username = StringField(_('Username'), validators=[DataRequired()])
+    password = PasswordField(_('Password'), validators=[DataRequired()])
+    remember_me = BooleanField(_('Remember Me'))
+    submit = SubmitField(_('Sign In'))
 
 
 class RegisterForm(FlaskForm):
-    username = StringField(_1('Username'), validators=[DataRequired()])
-    email = EmailField(_1('Email'), validators=[DataRequired(), Email()])
-    password = PasswordField(_1('Password'), validators=[DataRequired()])
-    password_repeat = PasswordField(_1('Repeat Password'), validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField(_1('Register'))
+    username = StringField(_('Username'), validators=[DataRequired()])
+    email = EmailField(_('Email'), validators=[DataRequired(), Email()])
+    password = PasswordField(_('Password'), validators=[DataRequired()])
+    password_repeat = PasswordField(_('Repeat Password'), validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField(_('Register'))
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
@@ -31,18 +31,18 @@ class RegisterForm(FlaskForm):
 
 
 class ResetPasswordRequestForm(FlaskForm):
-    email = StringField(_1('Email'), validators=[DataRequired(), Email()])
-    submit = SubmitField(_1('Request Password Reset'))
+    email = StringField(_('Email'), validators=[DataRequired(), Email()])
+    submit = SubmitField(_('Request Password Reset'))
 
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField(_1('Password'), validators=[DataRequired()])
-    password2 = PasswordField(_1('Repeat Password'), validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField(_1('Request Password Reset'))
+    password = PasswordField(_('Password'), validators=[DataRequired()])
+    password2 = PasswordField(_('Repeat Password'), validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField(_('Request Password Reset'))
 
 
 class ResetPasswordFormAuthorized(FlaskForm):
-    current_password = PasswordField(_1('Current Password'), validators=[DataRequired()])
-    password = PasswordField(_1('Password'), validators=[DataRequired()])
-    password2 = PasswordField(_1('Confirm Password'), validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField(_1('Update Password'))
+    current_password = PasswordField(_('Current Password'), validators=[DataRequired()])
+    password = PasswordField(_('Password'), validators=[DataRequired()])
+    password2 = PasswordField(_('Confirm Password'), validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField(_('Update Password'))

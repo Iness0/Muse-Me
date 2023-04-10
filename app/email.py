@@ -12,7 +12,6 @@ def send_email(subject, from_email, to, html_content, attachments=None):
         subject=subject,
         html_content=html_content,
     )
-    print(from_email)
     if attachments:
         for attachment in attachments:
             file_name, file_content, file_type = attachment
@@ -26,10 +25,8 @@ def send_email(subject, from_email, to, html_content, attachments=None):
             message.add_attachment(attachment)
 
     try:
-        print(0)
         sg = SendGridAPIClient(current_app.config['SENDGRID_API_KEY'])
         response = sg.send(message)
-        print(1)
         print(response.status_code)
         print(response.body)
         print(response.headers)

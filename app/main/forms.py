@@ -8,7 +8,7 @@ from flask import request
 
 
 class EditProfileForm(FlaskForm):
-    username = StringField(_1('Username'), validators=[DataRequired()])
+    username = StringField(_('Username'), validators=[DataRequired()])
     first_name = StringField(_('First name'))
     last_name = StringField(_('Last name'))
     about_me = TextAreaField(_1('About me'), validators=[Length(min=0, max=300)])

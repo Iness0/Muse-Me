@@ -96,40 +96,6 @@
         </div>
     </div>
 
-
-{#    <script>#}
-{#        $(document).ready(function () {#}
-{#            let nextUrl = $('#load-more-btn').data('next-url');#}
-{#            $('#load-more-btn').click(function () {#}
-{#                $.ajax({#}
-{#                    url: nextUrl,#}
-{#                    success: function (data) {#}
-{#                        let newRows = $(data).find('#message-table tr');#}
-{#                        // Convert the Flask-Moment timestamp to a human-readable format#}
-{#                        newRows.find('.flask-moment').each(function () {#}
-{#                            let timestamp = $(this).data('timestamp');#}
-{#                            let humanReadable = moment(timestamp).fromNow();#}
-{#                            $(this).text(humanReadable).removeClass('flask-moment').show();#}
-{#                        });#}
-{#                        $('#message-table').prepend(newRows);#}
-                        {#$('#message-table').append($(data).find('#message-table tr'));#}
-{#                        nextUrl = $(data).find('#load-more-btn').data('next-url');#}
-{#                        if (nextUrl === 'None') {#}
-{#                            $('#load-more-btn').hide();#}
-{#                        }#}
-{#                    }#}
-{#                });#}
-{#            });#}
-{##}
-{#            // When the user scrolls to the bottom of the page, load the next batch of messages#}
-{#            $(window).scroll(function () {#}
-{#                if ($(window).scrollTop() + $(window).height() == $(document).height()) {#}
-{#                    $('#load-more-btn').click();#}
-{#                }#}
-{#            });#}
-{#        });#}
-{#    </script>#}
-
 <script>
 $(document).ready(function() {
     scrollToBottom();
@@ -143,7 +109,7 @@ $(document).ready(function() {
   const input = document.querySelector('.post-textarea');
 
   input.addEventListener('keyup', function(event) {
-    if (event.keyCode === 13) {  // 13 is the keycode for the Enter key
+    if (event.keyCode === 13) {
       form.submit();
     }
   });

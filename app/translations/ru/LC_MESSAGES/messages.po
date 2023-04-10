@@ -107,7 +107,7 @@ msgstr "Пользователь"
 
 #: app/main/forms.py:47
 msgid "Message"
-msgstr ""
+msgstr "Сообщение"
 
 #: app/main/routes.py:35
 msgid "Your post is now live!"
@@ -135,24 +135,24 @@ msgstr "Обзор"
 
 #: app/main/routes.py:172
 msgid "Send Message"
-msgstr ""
+msgstr "Отправить сообщение"
 
 #: app/main/routes.py:211
 msgid "An export is in progress"
-msgstr ""
+msgstr "Выгрузка в процессе"
 
 #: app/main/routes.py:213
 msgid "Exporting posts..."
-msgstr ""
+msgstr "Выгружаем сообщения"
 
 #: app/templates/_post.html:15
 #, python-format
 msgid "%(username)s said %(when)s"
-msgstr ""
+msgstr "Пользователь сказал"
 
 #: app/templates/base.html:39 app/templates/messages.html:4
 msgid "Messages"
-msgstr ""
+msgstr "Сообщения"
 
 #: app/templates/index.html:25 app/templates/user.html:47
 msgid "Newer posts"
@@ -164,11 +164,11 @@ msgstr "Старые посты"
 
 #: app/templates/messages.html:12
 msgid "Newer messages"
-msgstr ""
+msgstr "Новые сообщения"
 
 #: app/templates/messages.html:17
 msgid "Older messages"
-msgstr ""
+msgstr "Старые сообщения"
 
 #: app/templates/search.html:4
 msgid "Search Results"
@@ -185,7 +185,7 @@ msgstr "Следующие результаты"
 #: app/templates/send_message.html:4
 #, python-format
 msgid "Send Message to %(recipient)s"
-msgstr ""
+msgstr "Отправить сообщение"
 
 #: app/templates/user.html:7
 msgid "User"
@@ -201,29 +201,29 @@ msgstr "Редактировать профиль"
 
 #: app/templates/user.html:15
 msgid "Export your posts"
-msgstr ""
+msgstr "Выгрузить посты"
 
 #: app/templates/user.html:35
 msgid "Send private message"
-msgstr ""
+msgstr "Отправить личное сообщение"
 
 #: app/templates/user_popup.html:11
 #, python-format
 msgid "%(count)d followers"
-msgstr ""
+msgstr "подписчиков"
 
 #: app/templates/user_popup.html:11
 #, python-format
 msgid "%(count)d following"
-msgstr ""
+msgstr "вы подписаны"
 
 #: app/templates/user_popup.html:17
 msgid "Follow"
-msgstr ""
+msgstr "Подписаться"
 
 #: app/templates/user_popup.html:24
 msgid "Unfollow"
-msgstr ""
+msgstr "Отписаться"
 
 #: app/templates/errors/404.html:4
 msgid "File Not Found"

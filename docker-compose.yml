@@ -60,7 +60,7 @@ services:
         - MYSQL_RANDOM_ROOT_PASSWORD=yes
         - MYSQL_DATABASE=muse_me
         - MYSQL_USER=muse_me
-        - MYSQL_PASSWORD=Mysql12404
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
 
 
