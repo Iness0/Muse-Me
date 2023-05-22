@@ -81,5 +81,12 @@
             $("#upload-modal").modal("show");
         });
     });
+    $(document).ready(function() {
+    $('textarea').on('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+});
+
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/dropzone.js') }}"></script>

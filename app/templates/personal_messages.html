@@ -17,7 +17,6 @@
                     <div class="card-body">
                         <div class="chat-window bg-light border-0">
                             <table class="table  table-borderless" id="message-table">
-                                {% if messages %}
                                 {% for post in messages %}
                                     {% if post.recipient.id==current_user.id %}
                                         <tr class='message message-right bg-dark-subtle'
@@ -78,11 +77,6 @@
                                 {% endif %}
                                 </tr>
                                 {% endfor %}
-                                {% else %}
-                                <tr>
-                                    <td>You don't have any dialogs right now.</td>
-                                </tr>
-                                {% endif %}
                             </table>
                         </div>
                     </div>
