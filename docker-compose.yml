@@ -5,6 +5,8 @@ services:
       container_name: muse_me
       volumes:
         - ./app/static:/app/static
+        - user-uploads:/app/static/uploads
+
       networks:
         - elastic
       depends_on:
@@ -39,6 +41,7 @@ services:
         - ./nginx.conf:/etc/nginx/nginx.conf
         - ./app/static:/app/static
         - /var/nginx_cache:/var/cache/nginx
+        - user-uploads:/app/static/uploads
 
       depends_on:
         - muse_me
@@ -76,7 +79,8 @@ services:
         - MYSQL_USER=muse_me
         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
-
+volumes:
+  user-uploads:
 
 networks:
   elastic: {}
