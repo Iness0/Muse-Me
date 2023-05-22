@@ -8,11 +8,15 @@
             </div>
             <div class="col-md-8 col-lg-6 gap-4 vstack">
                 <div class="card">
+                {% if messages %}
                     <table class="table table-borderless" id="message-table">
                         {% for post in messages %}
                             {% include "_messages.html" %}
                         {% endfor %}
                     </table>
+                {% else %}
+                <h4>You dont have a single conversation. Start the first by messaging people you're <a href="{{ url_for('bp.user', username=current_user.username, relation='following') }}">interested in</a></h4>
+                {% endif %}
                 </div>
                 <div class="text-center">
                 </div>

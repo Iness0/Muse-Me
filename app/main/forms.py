@@ -37,7 +37,7 @@ class EmptyForm(FlaskForm):
 
 class PostForm(FlaskForm):
     post = TextAreaField(_1('Say something'), validators=[
-        DataRequired(), Length(min=1, max=140)])
+        DataRequired(), Length(min=1, max=999)])
     image = FileField('Image', validators=[
         FileAllowed(['jpg', 'png'], 'Images only!')
     ])

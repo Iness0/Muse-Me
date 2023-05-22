@@ -35,7 +35,6 @@ RUN poetry check
 
 # Install Dependencies
 RUN . venv/bin/activate && poetry install --no-interaction --no-cache --without dev
-RUN venv/bin/pip install pymysql cryptography
 
 # Copy Application
 COPY app app

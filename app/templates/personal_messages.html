@@ -5,113 +5,124 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row g-4">
-        {% include '_user_card.html' %}
+            {% include '_user_card.html' %}
             <div class="col-md-8 col-lg-6 gap-4 vstack">
-  <div class="card">
-  <div class="card-header text-center pb-0">
-      {{ user.username }}
-      <p>
-      <span class="small">Last seen: {{ moment(user.last_seen).fromNow() }}</span>
-      </p>
-  </div>
-      <div class="card-body">
-        <div class="chat-window bg-light border-0">
-          <table class="table  table-borderless" id="message-table">
-
-              {% for post in messages %}
-                  {% if post.recipient.id==current_user.id %}
-                      <tr class='message message-right bg-dark-subtle'
-                          onmouseover="this.style.backgroundColor='#e6d2d2';"
-                          onmouseout="this.style.backgroundColor='transparent';">
-                          <td style="width: 70px">
-                              <img class="avatar avatar-story" src="{{ url_for('static', filename='uploads/' + post.author.avatar) if post.author.avatar else post.author.avatar_alt(70) }}" alt="avatar">
-                          </td>
-                          <td>
-                              <div class="nav nav-divider">
-                                  <h6 class="nav-item card-title mb-0"><a
-                                          href="{{ url_for('main.user', username=post.author.username) }}">{{ post.author.username }}</a>
-                                  </h6>
-                                  <span class="small">{{ moment(post.timestamp).fromNow() }}</span>
-                              </div>
-                              <p><span id="post{{ post.id }}">{{ post.body }}</span></p>
-                          </td>
-                          {% else %}
-                      <tr class='message message-left bg-light-subtle'
-                          onmouseover="this.style.backgroundColor='#e6d2d2';"
-                          onmouseout="this.style.backgroundColor='transparent';">
-                      <td style="width: 70px">
-                          <img class="avatar avatar-story" src="{{ url_for('static', filename='uploads/' + post.author.avatar) if post.author.avatar else post.author.avatar_alt(70) }}" alt="avatar">
-                      </td>
-                      <td>
-                          <div class="nav nav-divider">
-                              <h6 class="nav-item card-title mb-0"><a
-                                      href="{{ url_for('main.user', username=post.author.username) }}">{{ post.author.username }}</a>
-                              </h6>
-                              <span class="small">{{ moment(post.timestamp).fromNow() }}</span>
-                          </div>
-                          <p><span id="post{{ post.id }}">{{ post.body }}</span></p>
-                      </td>
-                  {% endif %}
-              {% if post.image_path %}
-                  <td>
-                      <a href="#" data-toggle="modal" data-target="#imageModal{{ post.id }}">
-                          <img class="card-img" src="{{ url_for('static', filename=post.image_path) }}" alt="image-card">
-                      </a>
-                      <div class="modal fade" id="imageModal{{ post.id }}" tabindex="-1" role="dialog"
-                           aria-labelledby="imageModalLabel" aria-hidden="true">
-                          <div class="modal-dialog modal-lg" role="document">
-                              <div class="modal-content">
-                                  <div class="modal-body">
-                                      <img src="{{ url_for('static', filename=post.image_path) }}"
-                                           class="img-fluid mx-auto d-block" alt="My Image">
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </td>
-              {% endif %}
-              </tr>
-              {% endfor %}
-          </table>
-        </div>
-      </div>
-      <div class="text-center">
-    </div>
-  <div class="card-footer">
-          <form class="nav nav-item w-100 position-relative message-form" action="" method="post">
-                  {{ form.hidden_tag() }}
-          {{ form.message(class='form-control pe-5 bg-light post-textarea', rows=1, placeholder="Add a comment...", data_autoresize='') }}
-                    <button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0"
-                            type="submit">
-                        <i class="bi bi-send-fill"> </i>
-                    </button>
-      {% for error in form.message.errors %}
-          <span style="color: red;">{{ error }}</span>
-      {% endfor %}
-{#      <p>{{ form.submit() }}</p>#}
-      </form>
-      </div>
-  </div>
+                <div class="card">
+                    <div class="card-header text-center pb-0">
+                        {{ user.username }}
+                        <p>
+                            <span class="small">Last seen: {{ moment(user.last_seen).fromNow() }}</span>
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="chat-window bg-light border-0">
+                            <table class="table  table-borderless" id="message-table">
+                                {% if messages %}
+                                {% for post in messages %}
+                                    {% if post.recipient.id==current_user.id %}
+                                        <tr class='message message-right bg-dark-subtle'
+                                            onmouseover="this.style.backgroundColor='#e6d2d2';"
+                                            onmouseout="this.style.backgroundColor='transparent';">
+                                            <td style="width: 70px">
+                                                <img class="avatar avatar-story"
+                                                     src="{{ url_for('static', filename='uploads/' + post.author.avatar) if post.author.avatar else post.author.avatar_alt(70) }}"
+                                                     alt="avatar">
+                                            </td>
+                                            <td>
+                                                <div class="nav nav-divider">
+                                                    <h6 class="nav-item card-title mb-0"><a
+                                                            href="{{ url_for('main.user', username=post.author.username) }}">{{ post.author.username }}</a>
+                                                    </h6>
+                                                    <span class="small">{{ moment(post.timestamp).fromNow() }}</span>
+                                                </div>
+                                                <p><span id="post{{ post.id }}">{{ post.body }}</span></p>
+                                            </td>
+                                            {% else %}
+                                        <tr class='message message-left bg-light-subtle'
+                                            onmouseover="this.style.backgroundColor='#e6d2d2';"
+                                            onmouseout="this.style.backgroundColor='transparent';">
+                                        <td style="width: 70px">
+                                            <img class="avatar avatar-story"
+                                                 src="{{ url_for('static', filename='uploads/' + post.author.avatar) if post.author.avatar else post.author.avatar_alt(70) }}"
+                                                 alt="avatar">
+                                        </td>
+                                        <td>
+                                            <div class="nav nav-divider">
+                                                <h6 class="nav-item card-title mb-0"><a
+                                                        href="{{ url_for('main.user', username=post.author.username) }}">{{ post.author.username }}</a>
+                                                </h6>
+                                                <span class="small">{{ moment(post.timestamp).fromNow() }}</span>
+                                            </div>
+                                            <p><span id="post{{ post.id }}">{{ post.body }}</span></p>
+                                        </td>
+                                    {% endif %}
+                                {% if post.image_path %}
+                                    <td>
+                                        <a href="#" data-toggle="modal" data-target="#imageModal{{ post.id }}">
+                                            <img class="card-img"
+                                                 src="{{ url_for('static', filename=post.image_path) }}"
+                                                 alt="image-card">
+                                        </a>
+                                        <div class="modal fade" id="imageModal{{ post.id }}" tabindex="-1" role="dialog"
+                                             aria-labelledby="imageModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <img src="{{ url_for('static', filename=post.image_path) }}"
+                                                             class="img-fluid mx-auto d-block" alt="My Image">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                {% endif %}
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td>You don't have any dialogs right now.</td>
+                                </tr>
+                                {% endif %}
+                            </table>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                    </div>
+                    <div class="card-footer">
+                        <form class="nav nav-item w-100 position-relative message-form" action="" method="post">
+                            {{ form.hidden_tag() }}
+                            {{ form.message(class='form-control pe-5 bg-light post-textarea', rows=1, placeholder="Add a comment...", data_autoresize='') }}
+                            <button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0"
+                                    type="submit">
+                                <i class="bi bi-send-fill"> </i>
+                            </button>
+                            {% for error in form.message.errors %}
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                            {#      <p>{{ form.submit() }}</p>#}
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-<script>
-$(document).ready(function() {
-    scrollToBottom();
+    <script>
+        $(document).ready(function () {
+            scrollToBottom();
 
-    function scrollToBottom() {
-        let chatWindow = $('.chat-window');
-        chatWindow.scrollTop(chatWindow[0].scrollHeight);
-    }
-});
-  const form = document.querySelector('.message-form');
-  const input = document.querySelector('.post-textarea');
+            function scrollToBottom() {
+                let chatWindow = $('.chat-window');
+                chatWindow.scrollTop(chatWindow[0].scrollHeight);
+            }
+        });
+        const form = document.querySelector('.message-form');
+        const input = document.querySelector('.post-textarea');
 
-  input.addEventListener('keyup', function(event) {
-    if (event.keyCode === 13) {
-      form.submit();
-    }
-  });
-</script>
+        input.addEventListener('keyup', function (event) {
+            if (event.keyCode === 13) {
+                form.submit();
+            }
+        });
+    </script>
 {% endblock %}
