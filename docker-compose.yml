@@ -4,9 +4,7 @@ services:
       build: .
       container_name: muse_me
       volumes:
-        - ./app/static:/app/static
-        - user-uploads:/app/static/uploads
-
+        - static:/home/muse_me/app/static
       networks:
         - elastic
       depends_on:
@@ -39,9 +37,8 @@ services:
         - "80:80"
       volumes:
         - ./nginx.conf:/etc/nginx/nginx.conf
-        - ./app/static:/app/static
-        - /var/nginx_cache:/var/cache/nginx
-        - user-uploads:/app/static/uploads
+        - static:/home/muse_me/app/static
+
 
       depends_on:
         - muse_me
@@ -65,6 +62,8 @@ services:
         - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       volumes:
         - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+        - elasticsearch_data:/usr/share/elasticsearch/data
+
 
 
     mysql:
@@ -78,9 +77,14 @@ services:
         - MYSQL_DATABASE=muse_me
         - MYSQL_USER=muse_me
         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      volumes:
+        - mysql-data:/var/lib/mysql
 
 volumes:
-  user-uploads:
+  static:
+  mysql-data:
+  elasticsearch_data:
+
 
 networks:
   elastic: {}

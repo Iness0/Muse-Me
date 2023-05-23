@@ -7,17 +7,27 @@
                 {% include '_user_card.html' %}
             </div>
             <div class="col-md-8 col-lg-6 gap-4 vstack">
-                <div class="card">
                 {% if messages %}
-                    <table class="table table-borderless" id="message-table">
-                        {% for post in messages %}
-                            {% include "_messages.html" %}
-                        {% endfor %}
-                    </table>
+                    <div class="card">
+                        <table class="table table-borderless" id="message-table">
+                            {% for post in messages %}
+                                {% include "_messages.html" %}
+                            {% endfor %}
+                        </table>
+                    </div>
                 {% else %}
-                <h4>You dont have a single conversation. Start the first by messaging<a href="{{ url_for('main.followers', username=current_user.username, relation='following') }}">  people you're interested in</a>.</h4>
+                            <h4 class="text-center">You don't have a single conversation. Start by messaging
+                                <a style="text-decoration: underline;" href="{{ url_for('main.followers', username=current_user.username, relation='following') }}">people
+                                    you're interested in</a>.
+                            </h4>
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <div style="width: 45%;">
+                            <img src="{{ url_for('static', filename='images/empty_mail.png') }}" class="img-fluid"
+                                 alt="No conversations">
+                        </div>
+                    </div>
+                        <br/>
                 {% endif %}
-                </div>
                 <div class="text-center">
                 </div>
             </div>

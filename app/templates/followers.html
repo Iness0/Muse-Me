@@ -39,7 +39,9 @@
                                 {{ form.submit(class_='btn btn-danger-soft btn-sm mb-0 me-2', value=_('Unfollow'), type='submit') }}
                             </form>
                         {% endif %}
+                        <a href="{{ url_for('main.messages', user=follower.id) }}">
                         <button class="btn btn-primary-soft btn-sm mb-0"> Message</button>
+                        </a>
                     </div>
                 </div>
             {% endfor %}
